@@ -27,7 +27,7 @@ const About = () => {
         transition={{ duration: 0.8 }}
         className="text-center"
       >
-        <h1 className="text-4xl font-bold text-gray-900 mb-3">About Rentify</h1>
+        <h1 className="text-4xl font-bold text-gray-900 mb-3">About<span className="text-[#]">Rentify</span> </h1>
         <p className="text-gray-600 max-w-3xl mx-auto text-lg">
           Rentify is India’s modern peer-to-peer rental marketplace where users can
           rent products at affordable prices or list their own items to earn money.
