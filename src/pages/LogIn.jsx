@@ -14,11 +14,11 @@ const Login = () => {
           drop-shadow-md bg-black/20 p-6 rounded-2xl shadow-xl"
         >
           <h1 className="text-5xl font-extrabold leading-tight tracking-wide text-[#f8f9fa] drop-shadow-lg">
-            Rent from anywhere
+            Join Rentify today
           </h1>
 
           <p className="text-2xl text-[#dee2e6] mt-4 tracking-wide font-light drop-shadow-md">
-            Aao bhai rent or list karo
+          List your items, rent new ones, all from one account
           </p>
         </div>
 
@@ -38,7 +38,7 @@ const Login = () => {
           <div className="w-full flex flex-col">
             <h3 className="text-3xl font-semibold mb-2 text-[#212529]">Log In</h3>
             <p className="text-base mb-6 text-[#495057]">
-              Welcome back! Apne credentials daalo
+              Welcome back! Please Enter Your Credentials
             </p>
           </div>
 
@@ -46,13 +46,13 @@ const Login = () => {
           <div className="w-full flex flex-col">
             <input
               type="email"
-              placeholder="Email dalo"
+              placeholder="Enter your Email"
               className="w-full text-black py-2 my-3 bg-transparent border-b border-black outline-none"
             />
 
             <input
               type="password"
-              placeholder="Password dalo"
+              placeholder="Enter your Password"
               className="w-full text-black py-2 my-3 bg-transparent border-b border-black outline-none"
             />
           </div>
@@ -62,7 +62,7 @@ const Login = () => {
 
             <div className="flex items-center">
               <input type="checkbox" className="w-4 h-4 mr-2" />
-              <p className="text-sm text-[#495057]">Mujhe bhoolna mat</p>
+              <p className="text-sm text-[#495057]">Remenber me</p>
             </div>
 
             <Link
@@ -75,11 +75,15 @@ const Login = () => {
           </div>
 
           {/* Login Button */}
-          <div className="w-full flex flex-col my-6 gap-4">
-            <button className="w-full text-white bg-black rounded-md py-3 text-center cursor-pointer hover:bg-[#343a40] transition">
-              Log In
-            </button>
-          </div>
+
+         <div className="w-full flex flex-col my-6 gap-4">
+  {/*<Link to="/dashboard/profile">*/}
+    <button className="w-full text-white bg-black rounded-md py-3 text-center cursor-pointer hover:bg-[#343a40] transition">
+      Log In
+    </button>
+  {/*</Link>*/}
+</div>
+
 
           {/* Divider */}
           <div className="w-full flex items-center justify-center relative py-2">
@@ -104,7 +108,7 @@ const Login = () => {
         {/* Register Link */}
         <div className="w-full flex items-center justify-center mt-10">
           <p className="text-sm text-[#343a40]">
-            Account nhi hai?
+            Don't have an account?
             <Link
               to="/register"
               className="font-semibold underline underline-offset-2 cursor-pointer ml-1 hover:text-black transition"

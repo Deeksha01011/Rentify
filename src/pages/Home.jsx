@@ -16,15 +16,17 @@ import ac from "../assets/products/Home Appliances/ac1.png";
 import Bgvid from "../assets/bgvideos/3773486-hd_1920_1080_30fps.mp4";
 
 import { Book, Tv, Home as HomeIcon, Car, Sofa } from "lucide-react";
+import ItemCard from "../components/ItemCard";
 
 // Featured Products Data
-const featuredProducts = [
+const itemData = [
   {
     id: 1,
     title: "Classic Literature Set",
     category: "Books",
     image: book,
     description: "A timeless collection of novels for book lovers.",
+    price: "190"
   },
   {
     id: 2,
@@ -32,6 +34,7 @@ const featuredProducts = [
     category: "Electronics",
     image: tv,
     description: "4K Ultra HD Smart TV for next-level entertainment.",
+    price: "1200"
   },
   {
     id: 3,
@@ -39,6 +42,7 @@ const featuredProducts = [
     category: "Home Appliances",
     image: fryer,
     description: "Healthy cooking with quick & oil-free technology.",
+    price: "300"
   },
   {
     id: 4,
@@ -46,6 +50,7 @@ const featuredProducts = [
     category: "Automobiles",
     image: bike,
     description: "Eco-friendly electric bike with powerful battery.",
+    price: "750"
   },
   {
     id: 5,
@@ -53,6 +58,7 @@ const featuredProducts = [
     category: "Furniture",
     image: sofa,
     description: "Premium cushioned sofa set for your living room.",
+    price: "450"
   },
   {
     id: 6,
@@ -60,6 +66,7 @@ const featuredProducts = [
     category: "Electronics",
     image: ac,
     description: "Stay cool with this energy-efficient air conditioner.",
+    price: "900"
   },
 ];
 
@@ -123,36 +130,21 @@ const Home = () => {
         Featured Products
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 mb-20">
-        {featuredProducts.map((product) => (
-          <motion.div
-            key={product.id}
-            whileHover={{ scale: 1.07 }}
-            whileTap={{ scale: 0.97 }}
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-500 overflow-hidden cursor-pointer"
-          >
-            <div className="h-80 w-full overflow-hidden">
-              <img
-                src={product.image}
-                alt={product.title}
-                className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
-              />
-            </div>
-
-            <div className="p-4 bg-[#ced4da]">
-              <h3 className="text-xl font-bold text-gray-800">
-                {product.title}
-              </h3>
-              <p className="text-l text-gray-800">{product.category}</p>
-              <p className="mt-2 text-gray-600 text-sm italic">{product.description}</p>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+     <div className="flex flex-wrap gap-8 mb-20">
+  {itemData.map((product) => (
+    <div
+      key={product.id}
+      className="
+        w-full          // mobile: 1 per row
+        // sm:w-1/2        // tablet: 2 per row
+        // lg:w-1/3        // laptop: 3 per row
+        // xl:w-1/5        // big screen: 5 per row
+      "
+    >
+      <ItemCard itemData={product} />
+    </div>
+  ))}
+</div>
 
       {/* Rent & List Video Banner Section */}
       <div className="relative w-full rounded-3xl overflow-hidden mb-20">

@@ -1,243 +1,290 @@
-import React, { useEffect, useState } from "react";
-import FormWrapper from "../../components/form/FormWrapper.jsx";
-import InputField from "../../components/form/Input.jsx";
-import SelectField from "../../components/form/Select.jsx";
-import Button from "../../components/form/Button.jsx";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { User } from "lucide-react";
 
 const Profile = () => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
-    city: "",
-    state: "",
-    country: "",
+  const [user, setUser] = useState({
+    firstName: "Natashia",
+    lastName: "Khaleira",
+    email: "info@binary-fusion.com",
+    phone: "+62 821 2554 5846",
+    dob: "1990-12-10",
+    role: "User",
+
+    country: "United Kingdom",
+    state: "Bihar",
+    city: "Leeds, East London",
+    postalCode: "ERT 1254",
+
     isLister: false,
     listerType: "",
-    companyName: "",
-    gstNumber: "",
-    aadhaarNumber: "",
-    accountHolderName: "",
-    accountNumber: "",
-    ifscCode: "",
-    bankName: "",
   });
 
-  const navigate = useNavigate();
+  // ---------------- MODAL STATE ----------------
+  const [editPersonal, setEditPersonal] = useState(false);
+  const [editAddress, setEditAddress] = useState(false);
 
-  // ---------------------------------------------------
-  // FETCH USER DETAILS
-  // ---------------------------------------------------
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem("token");
+  // ---------------- FORM STATE ----------------
+  const [formData, setFormData] = useState({});
+  const [errors, setErrors] = useState({});
 
-        const res = await axios.get("http://localhost:4000/api/user/getUserDetails", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        setUser(res.data.data);
-
-        const p = res.data.data.additionalDetails;
-
-        setFormData({
-          firstName: res.data.data.firstName || "",
-          lastName: res.data.data.lastName || "",
-          phoneNumber: p.phoneNumber || "",
-          city: p.city || "",
-          state: p.state || "",
-          country: p.country || "",
-          isLister: p.isLister || false,
-          listerType: p.listerType || "",
-          companyName: p.companyName || "",
-          gstNumber: p.gstNumber || "",
-          aadhaarNumber: p.aadhaarNumber || "",
-          accountHolderName: p.accountHolderName || "",
-          accountNumber: p.accountNumber || "",
-          ifscCode: p.ifscCode || "",
-          bankName: p.bankName || "",
-        });
-
-        setLoading(false);
-      } catch (err) {
-        console.log("Error fetching user:", err);
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, []);
-
-  // ---------------------------------------------------
-  // HANDLE CHANGE
-  // ---------------------------------------------------
-  const handleChange = (name, value) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  // ---------------- HANDLERS ----------------
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // ---------------------------------------------------
-  // SUBMIT FORM
-  // ---------------------------------------------------
-  const handleSubmit = async () => {
-    try {
-      const token = localStorage.getItem("token");
+  const openEditPersonal = () => {
+    setFormData(user);
+    setErrors({});
+    setEditPersonal(true);
+  };
 
-      const res = await axios.put(
-        "http://localhost:4000/api/user/updateProfile",
-        formData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+  const openEditAddress = () => {
+    setFormData(user);
+    setErrors({});
+    setEditAddress(true);
+  };
 
-      alert("Profile Updated Successfully");
-      navigate("/dashboard");
-    } catch (err) {
-      console.log("Profile update error:", err);
-      alert(err.response?.data?.message || "Update Failed");
+  // ---------------- VALIDATION ----------------
+  const validatePersonalForm = () => {
+    const newErrors = {};
+
+    if (!formData.firstName?.trim()) {
+      newErrors.firstName = "First name is required";
     }
+
+    if (!formData.lastName?.trim()) {
+      newErrors.lastName = "Last name is required";
+    }
+
+    if (!formData.phone?.trim()) {
+  newErrors.phone = "Phone number is required";
+} else if (!/^\d{10}$/.test(formData.phone)) {
+  newErrors.phone = "Phone number must be exactly 10 digits";
+}
+
+
+    if (!formData.dob) {
+      newErrors.dob = "Date of birth is required";
+    }
+
+    if (formData.isLister && !formData.listerType) {
+      newErrors.listerType = "Please select lister type";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  const validateAddressForm = () => {
+    const newErrors = {};
+
+    if (!formData.country?.trim()) newErrors.country = "Country is required";
+    if (!formData.state?.trim()) newErrors.state = "State is required";
+    if (!formData.city?.trim()) newErrors.city = "City is required";
+    if (!formData.postalCode?.trim())
+      newErrors.postalCode = "Postal code is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  // ---------------- SAVE ----------------
+  const savePersonal = () => {
+    if (!validatePersonalForm()) return;
+    setUser(formData);
+    setEditPersonal(false);
+  };
+
+  const saveAddress = () => {
+    if (!validateAddressForm()) return;
+    setUser(formData);
+    setEditAddress(false);
+  };
 
   return (
-    <div className="w-[90%] mx-auto mt-6 mb-10">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">Edit Your Profile</h1>
+    <div className="p-6 space-y-6 bg-gray-100 min-h-screen">
 
-      <FormWrapper title="Personal Information">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <InputField
-            label="First Name"
-            value={formData.firstName}
-            onChange={(e) => handleChange("firstName", e.target.value)}
-          />
-
-          <InputField
-            label="Last Name"
-            value={formData.lastName}
-            onChange={(e) => handleChange("lastName", e.target.value)}
-          />
-
-          <InputField
-            label="Phone Number"
-            value={formData.phoneNumber}
-            onChange={(e) => handleChange("phoneNumber", e.target.value)}
-          />
-
-          <InputField
-            label="City"
-            value={formData.city}
-            onChange={(e) => handleChange("city", e.target.value)}
-          />
-
-          <InputField
-            label="State"
-            value={formData.state}
-            onChange={(e) => handleChange("state", e.target.value)}
-          />
-
-          <InputField
-            label="Country"
-            value={formData.country}
-            onChange={(e) => handleChange("country", e.target.value)}
-          />
+      {/* ---------------- TOP CARD ---------------- */}
+      <div className="bg-[#ced4da] p-9 rounded-xl shadow-sm flex items-center gap-8">
+        <div className="bg-[#f8f9fa] rounded-full w-20 h-20 flex items-center justify-center">
+          <User size={40} />
         </div>
-      </FormWrapper>
-
-      {/* ---------------------------------------------------
-          SWITCH TO LISTER
-      ------------------------------------------------------ */}
-      <FormWrapper title="Become a Lister">
-        <SelectField
-          label="Do you want to become a lister?"
-          options={[
-            { label: "No", value: false },
-            { label: "Yes", value: true },
-          ]}
-          value={formData.isLister}
-          onChange={(e) =>
-            handleChange("isLister", e.target.value === "true")
-          }
-        />
-
-        {formData.isLister && (
-          <>
-            <SelectField
-              label="Lister Type"
-              options={[
-                { label: "Individual", value: "individual" },
-                { label: "Business", value: "business" },
-              ]}
-              value={formData.listerType}
-              onChange={(e) => handleChange("listerType", e.target.value)}
-            />
-
-            {/* INDIVIDUAL LISTER FIELDS */}
-            {formData.listerType === "individual" && (
-              <InputField
-                label="Aadhaar Number"
-                value={formData.aadhaarNumber}
-                onChange={(e) => handleChange("aadhaarNumber", e.target.value)}
-              />
-            )}
-
-            {/* BUSINESS LISTER FIELDS */}
-            {formData.listerType === "business" && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-                <InputField
-                  label="Company Name"
-                  value={formData.companyName}
-                  onChange={(e) => handleChange("companyName", e.target.value)}
-                />
-
-                <InputField
-                  label="GST Number"
-                  value={formData.gstNumber}
-                  onChange={(e) => handleChange("gstNumber", e.target.value)}
-                />
-              </div>
-            )}
-
-            {/* COMMON BANK DETAILS */}
-            <FormWrapper title="Bank Details">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <InputField
-                  label="Account Holder Name"
-                  value={formData.accountHolderName}
-                  onChange={(e) => handleChange("accountHolderName", e.target.value)}
-                />
-
-                <InputField
-                  label="Account Number"
-                  value={formData.accountNumber}
-                  onChange={(e) => handleChange("accountNumber", e.target.value)}
-                />
-
-                <InputField
-                  label="IFSC Code"
-                  value={formData.ifscCode}
-                  onChange={(e) => handleChange("ifscCode", e.target.value)}
-                />
-
-                <InputField
-                  label="Bank Name"
-                  value={formData.bankName}
-                  onChange={(e) => handleChange("bankName", e.target.value)}
-                />
-              </div>
-            </FormWrapper>
-          </>
-        )}
-      </FormWrapper>
-
-      <div className="mt-8 flex justify-end">
-        <Button label="Update Profile" onClick={handleSubmit} />
+        <div>
+          <h2 className="text-xl font-bold">
+            {user.firstName} {user.lastName}
+          </h2>
+          <p className="text-sm text-gray-600">{user.role}</p>
+          <p className="text-sm italic text-gray-600">
+            {user.city}, {user.country}
+          </p>
+        </div>
       </div>
+
+      {/* ---------------- PERSONAL INFO ---------------- */}
+      <div className="bg-[#ced4da] p-6 rounded-xl shadow-sm">
+        <div className="flex justify-between mb-4">
+          <h3 className="font-bold italic text-lg">Personal Information</h3>
+          <button onClick={openEditPersonal} className="text-green-800 italic border-b border-green-900 cursor-pointer">
+            Edit
+          </button>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <p><b>First Name:</b> {user.firstName}</p>
+          <p><b>Last Name:</b> {user.lastName}</p>
+          <p><b>Email:</b> {user.email}</p>
+          <p><b>Phone:</b> {user.phone}</p>
+          <p><b>DOB:</b> {user.dob}</p>
+          <p><b>Lister:</b> {user.isLister ? user.listerType : "No"}</p>
+        </div>
+      </div>
+
+      {/* ---------------- ADDRESS ---------------- */}
+      <div className="bg-[#ced4da] p-6 rounded-xl shadow-sm">
+        <div className="flex justify-between mb-4">
+          <h3 className="font-semibold text-lg">Address</h3>
+          <button onClick={openEditAddress} className="text-green-800 italic border-b border-green-900 cursor-pointer">
+            Edit
+          </button>
+        </div>
+
+        <div className="grid grid-cols-4 gap-6">
+          <p><b>Country:</b> {user.country}</p>
+          <p><b>State:</b> {user.state}</p>
+          <p><b>City:</b> {user.city}</p>
+          <p><b>Postal:</b> {user.postalCode}</p>
+        </div>
+      </div>
+
+      {/* ================= PERSONAL MODAL ================= */}
+      {editPersonal && (
+        <div className="fixed inset-0 z-50">
+          <div
+            className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+            onClick={() => setEditPersonal(false)}
+          />
+
+          <div className="absolute top-5 left-1/2 -translate-x-1/2 bg-[#495057] p-10 rounded-xl w-[480px] max-h-[85vh] overflow-y-auto shadow-2xl">
+            <h3 className="text-xl font-semibold mb-5 text-white">
+              Edit Personal Information
+            </h3>
+
+            {["firstName", "lastName", "phone", "dob"].map((field) => (
+              <div key={field} className="mt-4">
+                <label className="text-sm text-[#dee2e6] capitalize">
+                  {field}
+                </label>
+                <input
+                  name={field}
+                  type={field === "dob" ? "date" : "text"}
+                  value={formData[field] || ""}
+                  onChange={handleChange}
+                  className="border w-full p-2 rounded-md mt-1 bg-[#e9ecef]"
+                />
+                {errors[field] && (
+                  <p className="text-red-400 text-xs">{errors[field]}</p>
+                )}
+              </div>
+            ))}
+
+            {/* ROLE */}
+            <div className="mt-4">
+              <label className="text-sm text-[#dee2e6]">Role</label>
+              <select
+                value={formData.isLister ? "yes" : "no"}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    isLister: e.target.value === "yes",
+                  })
+                }
+                className="border w-full p-2 rounded-md mt-1 bg-[#e9ecef]"
+              >
+                <option value="no">User</option>
+                <option value="yes">Lister</option>
+              </select>
+            </div>
+
+            {formData.isLister && (
+              <div className="mt-4">
+                <label className="text-sm text-[#dee2e6]">Lister Type</label>
+                <select
+                  name="listerType"
+                  value={formData.listerType}
+                  onChange={handleChange}
+                  className="border w-full p-2 rounded-md mt-1 bg-[#e9ecef]"
+                >
+                  <option value="">Select</option>
+                  <option value="individual">Individual</option>
+                  <option value="business">Business</option>
+                </select>
+                {errors.listerType && (
+                  <p className="text-red-400 text-xs">
+                    {errors.listerType}
+                  </p>
+                )}
+              </div>
+            )}
+
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => setEditPersonal(false)}
+                className="px-4 py-2 bg-[#6c757d] hover:bg-[#343a40] rounded-md text-white cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={savePersonal}
+                className="px-4 py-2 bg-[#212529] hover:bg-[#343a40] rounded-md text-white cursor-pointer"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= ADDRESS MODAL ================= */}
+      {editAddress && (
+        <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex justify-center pt-10">
+          <div className="bg-[#495057] p-10 rounded-xl w-[480px]">
+            <h3 className="text-xl text-white mb-4">Edit Address</h3>
+
+            {["country", "state", "city", "postalCode"].map((field) => (
+              <div key={field} className="mt-4">
+                <label className="text-sm text-[#dee2e6] capitalize">
+                  {field}
+                </label>
+                <input
+                  name={field}
+                  value={formData[field] || ""}
+                  onChange={handleChange}
+                  className="border w-full p-2 rounded-md mt-1 bg-[#e9ecef]"
+                />
+                {errors[field] && (
+                  <p className="text-red-400 text-xs">{errors[field]}</p>
+                )}
+              </div>
+            ))}
+
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => setEditAddress(false)}
+                className="px-4 py-2 bg-[#6c757d] hover:bg-[#343a40] text-white rounded-md cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={saveAddress}
+                className="px-4 py-2 bg-[#212529] hover:bg-[#343a40] text-white rounded-md cursor-pointer"
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
