@@ -1,24 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import bgImg from "../assets/backgrounds/registerbg.jpg";
-
+import toast from "react-hot-toast";
+import { ACCOUNT_TYPE } from "../utils/constants";
+import { setSignupData } from "../slices/authSlice";
+import { useDispatch } from "react-redux";
+import { Sendotp } from "../Services/operations/Authoperations";
 const Register = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [phone, setPhone] = useState("");
-
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setIsVisible(true);
-  }, []);
+  // const [showPassword, setShowPassword] = useState(false);
+  // const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [accountType, setAccountType] = useState(ACCOUNT_TYPE.USER);
+  const { firstName, lastName, email, password, confirmPassword } = formData;
 
-  const handleSendOTP = () => {
-    if (!phone || phone.length !== 10) {
-      alert("Please enter a valid 10-digit mobile number");
+  const changeHandler = (e) => {
+  
+    setFormData((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+ 
+  };
+
+  const submithandler = (e) => {
+    e.preventDefault();
+
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
       return;
     }
 
-    navigate("/otp", { state: { phone } });
+    const singupdata = {
+      ...formData,
+      accountType,
+    };
+
+    console.log(singupdata);
+    // Dispatch signup action here
+    dispatch(setSignupData(singupdata));
+    dispatch(Sendotp(email, navigate));
+
+    // reset form data
+    setFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+
+    setAccountType(ACCOUNT_TYPE.USER);
   };
 
   return (
@@ -39,8 +79,7 @@ const Register = () => {
           width: "100%",
           maxWidth: "500px",
           boxShadow: "0 4px 18px rgba(52, 58, 64, 0.15)",
-          transform: isVisible ? "translateY(0)" : "translateY(40px)",
-          opacity: isVisible ? 1 : 0,
+
           transition: "all 0.5s ease-in-out",
         }}
       >
@@ -56,24 +95,54 @@ const Register = () => {
           Register Yourself
         </h1>
 
-        <form style={{ display: "flex", flexDirection: "column", gap: "0.7rem" }}>
-          <input type="text" placeholder="First Name" style={inputStyle} />
-          <input type="text" placeholder="Last Name" style={inputStyle} />
-          <input type="email" placeholder="Email" style={inputStyle} />
-
+        <form
+          onSubmit={submithandler}
+          style={{ display: "flex", flexDirection: "column", gap: "0.7rem" }}
+        >
           <input
-            type="number"
-            placeholder="Phone Number"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
+            type="text"
+            name="firstName"
+            value={firstName}
+            onChange={changeHandler}
+            placeholder="First Name"
+            style={inputStyle}
+          />
+          <input
+            type="text"
+            name="lastName"
+            value={lastName}
+            onChange={changeHandler}
+            placeholder="Last Name"
+            style={inputStyle}
+          />
+          <input
+            type="email"
+            name="email"
+            value={email}
+            onChange={changeHandler}
+            placeholder="Email"
             style={inputStyle}
           />
 
-          <input type="password" placeholder="Create Password" style={inputStyle} />
-          <input type="password" placeholder="Re-enter Password" style={inputStyle} />
+          <input
+            type="password"
+            placeholder="Create Password"
+            name="password"
+            value={password}
+            onChange={changeHandler}
+            style={inputStyle}
+          />
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            name="confirmPassword"
+            value={confirmPassword}
+            onChange={changeHandler}
+            style={inputStyle}
+          />
 
-          <button type="button" style={buttonStyle} onClick={handleSendOTP}>
-            Send OTP
+          <button type="submit" style={buttonStyle}>
+            Create Account
           </button>
         </form>
       </div>

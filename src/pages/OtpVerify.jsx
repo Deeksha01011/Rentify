@@ -1,39 +1,45 @@
-import React, { useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";   // ✅ FIXED IMPORT
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // ✅ FIXED IMPORT
 import bgImg from "../assets/backgrounds/bl1.jpg";
+import OTPInput from "react-otp-input";
+import { useDispatch, useSelector } from "react-redux";
+import { Signup } from "../Services/operations/Authoperations";
 
 const OtpVerify = () => {
-  const location = useLocation();
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const phone = location.state?.phone;
-
-  // OTP boxes reference
-  const inputs = useRef([]);
-
-  // Move to next box
-  const handleChange = (element, index) => {
-    if (element.value.length > 0 && index < 5) {
-      inputs.current[index + 1].focus();
+  const [otp, setOtp] = React.useState("");
+  const { signupData } = useSelector((state) => state.auth);
+  console.log(signupData);
+  const { loading } = useSelector((state) => state.auth);
+  console.log(otp);
+  useEffect(() => {
+    if (!signupData) {
+      navigate("/register");
     }
-  };
+  }, []);
 
-  // Redirect to login after OTP verified
-  const handleVerify = () => {
-    navigate("/login");   
-  };
-
-  if (!phone) {
-    return (
-      <div className="flex justify-center items-center h-screen text-xl">
-        No phone number found. Please register first.
-      </div>
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    const { firstName, lastName, email, password, confirmPassword } =
+      signupData;
+    dispatch(
+      Signup(
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+        otp,
+        navigate
+      )
     );
-  }
+  };
 
   return (
     <div
-    className="w-11/12 max-w-maxContent mx-auto rounded-xl mt-5"
+      className="w-11/12 max-w-maxContent mx-auto rounded-xl mt-5"
       style={{
         backgroundImage: `url(${bgImg})`,
         backgroundSize: "cover",
@@ -44,34 +50,65 @@ const OtpVerify = () => {
         alignItems: "center",
       }}
     >
-      <div
-        style={{
-          background: "rgba(255,255,255,0.2)",
-          backdropFilter: "blur(4px)",
-          padding: "2rem",
-          width: "90%",
-          maxWidth: "420px",
-          borderRadius: "20px",
-          boxShadow: "0 4px 20px rgba(33,37,41,0.25)",
-          textAlign: "center",
-          color: "#f8f9fa",
-        }}
-      >
-        <h1
+      {loading ? (
+        <div className="text-gray-900 font-bold text-xl">Loading...</div>
+      ) : (
+        <div
           style={{
-            fontSize: "1.8rem",
-            fontWeight: "bold",
-            marginBottom: "0.5rem",
+            background: "rgba(255,255,255,0.2)",
+            backdropFilter: "blur(4px)",
+            padding: "2rem",
+            width: "90%",
+            maxWidth: "420px",
+            borderRadius: "20px",
+            boxShadow: "0 4px 20px rgba(33,37,41,0.25)",
+            textAlign: "center",
+            color: "#f8f9fa",
           }}
         >
-          Verify OTP
-        </h1>
+          <h1
+            style={{
+              fontSize: "1.8rem",
+              fontWeight: "bold",
+              marginBottom: "0.5rem",
+            }}
+          >
+            Verify Email
+          </h1>
 
-        <p style={{ marginBottom: "1.5rem", color: "#dee2e6" }}>
-          OTP sent to: <b style={{ color: "#fff" }}>{phone}</b>
-        </p>
+          <form onSubmit={handleOnSubmit}>
+            <OTPInput
+              value={otp}
+              onChange={setOtp}
+              numInputs={6}
+              renderInput={(props) => (
+                <input
+                  {...props}
+                  placeholder="-"
+                  style={{
+                    boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
+                  }}
+                  className="w-[48px] lg:w-[58px] border-0 bg-[rgba(255,255,255,0.4)] rounded-[0.5rem] text-[#212529] aspect-square text-center focus:border-0 focus:outline-2 focus:outline-yellow-50"
+                />
+              )}
+              renderSeparator={<span>-</span>}
+              inputStyleStyle={{
+                boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
+              }}
+              onFocus={(e) => (e.target.style.borderColor = "#212529")}
+              onBlur={(e) => (e.target.style.borderColor = "#ced4da")}
+            />
+            <button
+              type="submit"
+              onMouseOver={(e) => (e.target.style.backgroundColor = "#495057")}
+              onMouseOut={(e) => (e.target.style.backgroundColor = "#212529")}
+              className="mt-7 w-full cursor-pointer transition-all duration-300  font-medium bg-[#212529] text-white p-[1rem] rounded-lg font-medium "
+            >
+              Verify Email
+            </button>
+          </form>
 
-        {/* OTP Boxes */}
+          {/* OTP Boxes
         <div
           style={{
             display: "flex",
@@ -101,8 +138,8 @@ const OtpVerify = () => {
               onBlur={(e) => (e.target.style.borderColor = "#ced4da")}
             />
           ))}
-        </div>
-
+        </div> */}
+          {/* 
         <button
           style={{
             width: "100%",
@@ -121,8 +158,9 @@ const OtpVerify = () => {
           onMouseOut={(e) => (e.target.style.backgroundColor = "#212529")}
         >
           Verify OTP
-        </button>
-      </div>
+        </button> */}
+        </div>
+      )}
     </div>
   );
 };
