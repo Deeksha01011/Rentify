@@ -26,9 +26,9 @@ const Navbar = () => {
         {/* LEFT SIDE */}
         <div className="flex gap-7 items-center">
           {/* Logo */}
-          <Link to={"/"}>
+          <Link to="/">
             <h1 className="font-bold text-3xl font-Inter">
-              <span className="text-green-700 font-Inter">R</span>entify
+              <span className="text-green-700">R</span>entify
             </h1>
           </Link>
 
@@ -38,7 +38,7 @@ const Navbar = () => {
             <span className="font-semibold text-gray-700 font-inter">
               {location ? location : "Enter Location"}
             </span>
-            <FaCaretDown size={16} className="text-[#343a40]" />
+            <FaCaretDown size={16} />
           </div>
         </div>
 
@@ -92,22 +92,20 @@ const Navbar = () => {
               </li>
             ))}
 
-            {/* CATEGORY DROPDOWN */}
+            {/* CATEGORY */}
             <div className="relative">
               <div
                 onClick={() => setOpenCategory(!openCategory)}
-                className="flex items-center gap-1 cursor-pointer pb-1 text-black hover:text-[#6c757d]"
+                className="flex items-center gap-1 cursor-pointer"
               >
                 <span>CATEGORIES</span>
                 <FaCaretDown
-                  size={16}
-                  className={`text-[#343a40] transition-transform ${
-                    openCategory ? "rotate-180" : "rotate-0"
+                  className={`transition-transform ${
+                    openCategory ? "rotate-180" : ""
                   }`}
                 />
               </div>
 
-              {/* Dropdown Menu */}
               {openCategory && (
                 <div className="absolute bg-white shadow-lg rounded-lg mt-2 w-48 p-3 border border-gray-200">
                   {[
@@ -122,7 +120,7 @@ const Navbar = () => {
                       to={`/products?category=${item.toLowerCase()}`}
                       onClick={() => setOpenCategory(false)}
                     >
-                      <p className="px-3 py-2 hover:bg-gray-200 rounded-md cursor-pointer text-gray-700">
+                      <p className="px-3 py-2 hover:bg-gray-200 rounded-md">
                         {item}
                       </p>
                     </Link>
@@ -132,50 +130,52 @@ const Navbar = () => {
             </div>
 
             {/* ABOUT */}
-            <NavLink
-              to="/about"
-              className={({ isActive }) =>
-                `cursor-pointer pb-1 ${
-                  isActive
-                    ? "border-b-4 border-[#ced4da] text-[#212529]"
-                    : "text-black hover:text-[#6c757d]"
-                }`
-              }
-            >
+            <NavLink to="/about">
               <li>ABOUT</li>
             </NavLink>
 
             {/* CONTACT */}
-            <NavLink
-              to="/contact"
-              className={({ isActive }) =>
-                `cursor-pointer pb-1 ${
-                  isActive
-                    ? "border-b-4 border-[#ced4da] text-[#212529]"
-                    : "text-black hover:text-[#6c757d]"
-                }`
-              }
-            >
+            <NavLink to="/contact">
               <li>CONTACT</li>
             </NavLink>
           </ul>
 
-          {/* CART ICON *
-          <Link to={"/cart"} className="relative">
-            <IoCartOutline className="h-7 w-7" />
-            <span className="bg-[#495057] px-2 rounded-full absolute -top-2 -right-2 text-white text-xs">
-              0
-            </span>
-          </Link>
-          /}
+          {/* 🔁 LOGIN vs PROFILE */}
+          {!isLoggedIn ? (
+            /* LOGIN BUTTON */
+            <Link
+              to="/login"
+              className="px-5 py-2 bg-[#495057] text-white font-semibold rounded-lg hover:bg-[#212529]"
+            >
+              LOGIN
+            </Link>
+          ) : (
+            <div className="flex items-center gap-4">
+              {/* 🛒 CART */}
+              <Link to="/cart" className="relative">
+                <IoCartOutline className="h-7 w-7" />
+                <span className="bg-[#495057] px-2 rounded-full absolute -top-2 -right-2 text-white text-xs">
+                  0
+                </span>
+              </Link>
 
-          {/* LOGIN BUTTON */}
-          <Link
-            to="/login"
-            className="px-5 py-2 bg-[#495057] text-white font-semibold rounded-lg hover:bg-[#212529] transition-all duration-300"
-          >
-            LOGIN
-          </Link>
+              {/* 👤 PROFILE */}
+              <button
+                onClick={() => navigate("/profile")}
+                className="w-10 h-10 rounded-full overflow-hidden border border-gray-300 flex items-center justify-center bg-gray-100"
+              >
+                {user?.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt="profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <User size={20} />
+                )}
+              </button>
+            </div>
+          )}
         </nav>
       </div>
     </div>

@@ -6,7 +6,7 @@ import { Signin } from "../Services/operations/Authoperations";
 import { useDispatch } from "react-redux";
 const Login = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -24,10 +24,10 @@ const Login = () => {
   const { email, password } = formData;
 
   const onSubmitHandler = (e) => {
-    console.log(email)
+    console.log(email);
     e.preventDefault();
 
-   dispatch(  Signin(email, password, navigate))
+    dispatch(Signin(email, password, navigate));
   };
   return (
     <div className="w-full h-screen flex items-start mt-2 rounded-xl">
@@ -39,11 +39,11 @@ const Login = () => {
           drop-shadow-md bg-black/20 p-6 rounded-2xl shadow-xl"
         >
           <h1 className="text-5xl font-extrabold leading-tight tracking-wide text-[#f8f9fa] drop-shadow-lg">
-            Rent from anywhere
+            Join Rentify today
           </h1>
 
           <p className="text-2xl text-[#dee2e6] mt-4 tracking-wide font-light drop-shadow-md">
-            Aao bhai rent or list karo
+            List your items, rent new ones, all from one account
           </p>
         </div>
 
