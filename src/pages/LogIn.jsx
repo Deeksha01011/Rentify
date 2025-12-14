@@ -62,7 +62,7 @@ const Login = () => {
 
             <div className="flex items-center">
               <input type="checkbox" className="w-4 h-4 mr-2" />
-              <p className="text-sm text-[#495057]">Remenber me</p>
+              <p className="text-sm text-[#495057]">Remember me</p>
             </div>
 
             <Link

@@ -65,19 +65,19 @@ const Navbar = () => {
               {openCategory && (
                 <div className="absolute bg-white shadow-lg rounded-lg mt-2 w-48 p-3 border">
                   {[
-                    "Study Materials",
-                    "Electronics",
-                    "Home Appliances",
-                    "Automobiles",
-                    "Furniture",
-                  ].map((item, index) => (
-                    <Link
-                      key={index}
-                      to={`/products?category=${item.toLowerCase()}`}
-                      onClick={() => setOpenCategory(false)}
-                    >
-                      <p className="px-3 py-2 hover:bg-gray-200 rounded-md">
-                        {item}
+                    { label: "Study Materials", value: "stationery" },
+                    { label: "Electronics", value: "electronics" },
+                    { label: "Home Appliances", value: "homeappliances" },
+                    { label: "Automobiles", value: "automobiles" },
+                    { label: "Furniture", value: "furniture" },
+          ].map((cat) => (
+         <Link
+           key={cat.value}
+            to={`/products?category=${cat.value}`}
+            onClick={() => setOpenCategory(false)}
+          >
+          <p className="px-3 py-2 hover:bg-gray-200 rounded-md">
+            {cat.label}
                       </p>
                     </Link>
                   ))}

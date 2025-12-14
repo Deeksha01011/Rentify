@@ -6,12 +6,12 @@ import slider1 from "../assets/backgrounds/bg1.jpg";
 import slider2 from "../assets/backgrounds/bg2.jpg";
 import slider3 from "../assets/backgrounds/bg3.jpg";
 
-import book from "../assets/products/Books/geeta.jpg";
-import tv from "../assets/products/Home Appliances/tv1.jpg";
-import fryer from "../assets/products/Home Appliances/microwave1.jpg";
-import bike from "../assets/products/Automobiles/bike10.jpg";
-import sofa from "../assets/products/Furnitures/sofa1.jpg";
-import ac from "../assets/products/Home Appliances/ac1.png";
+import book from "../assets/products/stationery/geeta.jpg";
+import tv from "../assets/products/homeappliances/tv1.jpg";
+import fryer from "../assets/products/homeappliances/microwave1.jpg";
+import bike from "../assets/products/automobiles/bike10.jpg";
+import sofa from "../assets/products/furnitures/sofa1.jpg";
+import ac from "../assets/products/homeappliances/ac1.png";
 
 import Bgvid from "../assets/bgvideos/3773486-hd_1920_1080_30fps.mp4";
 
