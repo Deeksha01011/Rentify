@@ -2,14 +2,17 @@ import { categoriesEndpoint } from "../apis";
 import { apiconnector } from "../apiConnector";
 import toast from "react-hot-toast";
 
-export const getAllCategories = async () => {
+export const getAllCategories = async (token) => {
   const toastId = toast.loading("loading...");
 
   try {
     const response = await apiconnector(
       "GET",
       categoriesEndpoint.GETCATEGORIES,
-      {}
+      {},
+      {
+        Authorization: `Bearer ${token}`,
+      }
     );
     if (response.data.success) {
       console.log(response.data);

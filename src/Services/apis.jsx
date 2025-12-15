@@ -9,3 +9,7 @@ export const categoriesEndpoint = {
   GETCATEGORIES: "/items/getallcategories",
   GETCATEGORYDETAIL: "/items/getcategorydetails",
 };
+
+export const profileEndpoint = {
+  UPDATE_PROFILE_PICTURE: "/profile/uploadprofileimage"
+}
