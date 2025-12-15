@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import ItemCard from "../components/ItemCard";
 import categories from "../data/categories";
@@ -108,6 +108,22 @@ const Products = () => {
             </p>
           </div>
         </div>
+      </div>
+
+      <div>
+        <Link to="/dashboard/listitems">
+        <button className="mt-6 ml-10 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition">
+          List your Product
+        </button>
+        </Link>
+      </div>
+
+      <div>
+        <Link to="/dashboard/admin/admin-dashboard">
+        <button className="mt-6 ml-10 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition">
+          Admin Dashboard
+        </button>
+        </Link>
       </div>
 
       {/* ================= MAIN CONTENT ================= */}

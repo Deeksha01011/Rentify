@@ -180,10 +180,10 @@ const Home = () => {
             <button className="px-8 py-3 rounded-xl bg-[#343a40] text-white font-semibold shadow-md hover:bg-[#495057] transition cursor-pointer">
               Rent a Product
             </button>
-
             <button className="px-8 py-3 rounded-xl bg-white/30 backdrop-blur-md border border-gray-200 text-white font-semibold shadow-md hover:bg-white/40 transition cursor-pointer">
               List Your Product
             </button>
+            
           </div>
         </motion.div>
       </div>
