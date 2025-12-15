@@ -61,7 +61,7 @@ const App = () => {
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/otp" element={<OtpVerify />} />
+          <Route path="/verify-otp" element={<OtpVerify />} />
           <Route path="/otp-success" element={<OtpSuccess />} />
           <Route path="/category" element={<Category />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

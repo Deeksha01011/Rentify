@@ -6,10 +6,14 @@ export const authEndpoints = {
 };
 
 export const categoriesEndpoint = {
-  GETCATEGORIES: "/items/getallcategories",
-  GETCATEGORYDETAIL: "/items/getcategorydetails",
+  GETCATEGORIES: REACT_APP_API_URL + "/items/getallcategories",
+  GETCATEGORYDETAIL: REACT_APP_API_URL + "/items/getcategorydetails",
 };
 
 export const profileEndpoint = {
-  UPDATE_PROFILE_PICTURE: "/profile/uploadprofileimage"
-}
+  UPDATE_PROFILE_PICTURE: REACT_APP_API_URL + "/profile/uploadprofileimage",
+  UPDATE_PROFILE_URL: REACT_APP_API_URL + "/profile/updateprofile",
+  UPDATE_PASSWORD_URL: REACT_APP_API_URL + "/profile/changepassword",
+  DELETE_ACCOUNT_URL: REACT_APP_API_URL + "/profile/deleteaccount",
+  GET_USER_DETAILS: REACT_APP_API_URL + "/profile/getuserdeatils",
+};

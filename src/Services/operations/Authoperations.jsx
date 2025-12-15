@@ -66,21 +66,28 @@ export const Signin = (email, password, navigate) => async (dispatch) => {
       password,
     });
 
-    console.log(response.data.data);
-    if (response.data.success) {
-      toast.success("Login successful", { id: toastId });
-      dispatch(setToken(response.data.token));
-      localStorage.setItem("token", response.data.token);
-      navigate("/dashboard/my-profile");
+    if (!response.data.success) {
+      throw new Error("Login failed");
     }
-    const userImage = response.data?.image
-      ? response.data.image
+
+    const userImage = response.data.data.image
+      ? response.data.data.image
       : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.data.firstName} ${response.data.data.lastName}`;
-    dispatch(setUser({ ...response.data.data, image: userImage }));
-    localStorage.setItem(
-      "user",
-      JSON.stringify({ ...response.data.data, image: userImage })
-    );
+
+    const userData = {
+      ...response.data.data,
+      image: userImage,
+    };
+
+    toast.success("Login successful", { id: toastId });
+
+    dispatch(setToken(response.data.token));
+    dispatch(setUser(userData));
+
+    localStorage.setItem("token", response.data.token);
+    localStorage.setItem("user", JSON.stringify(userData));
+
+    navigate("/dashboard/my-profile");
   } catch (error) {
     console.error(error.message);
     console.error(error.message);

@@ -100,7 +100,7 @@ exports.resetpassword = async (req, res) => {
 
 exports.changePassword = async (req, res) => {
   try {
-    const userDetails = await User.findById(req.user.id);
+    const userDetails = await User.findById(req.user.userId);
     if (!userDetails) {
       return res.status(401).json({
         success: false,
