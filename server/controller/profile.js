@@ -170,9 +170,11 @@ const validatesize = (file) => {
 
 exports.updateProfilePicture = async (req, res) => {
   try {
+
+    console.log("backend me hu")
     const userId = req.user.userId;
     const file = req.files.profilePicture;
-    console.log(file);
+    console.log("backend wala call",file);
     console.log(userId);
 
     if (!userId || !file) {

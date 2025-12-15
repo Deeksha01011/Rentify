@@ -58,7 +58,7 @@ export const Signup =
 export const Signin = (email, password, navigate) => async (dispatch) => {
   const toastId = toast.loading("Loading...");
 
-  console.log("idhar AA gaya mai")
+  console.log("idhar AA gaya mai");
   dispatch(setLoading(true));
   try {
     const response = await apiconnector("POST", authEndpoints.LOGIN, {
@@ -66,25 +66,38 @@ export const Signin = (email, password, navigate) => async (dispatch) => {
       password,
     });
 
-    console.log(response.data);
+    console.log(response.data.data);
     if (response.data.success) {
       toast.success("Login successful", { id: toastId });
       dispatch(setToken(response.data.token));
       localStorage.setItem("token", response.data.token);
-       navigate("/dashboard/my-profile");
+      navigate("/dashboard/my-profile");
     }
     const userImage = response.data?.image
       ? response.data.image
-      : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.firstName} ${response.data.lastName}`;
-    dispatch(setUser({ ...response.data.userObj, image: userImage }));
+      : `https://api.dicebear.com/5.x/initials/svg?seed=${response.data.data.firstName} ${response.data.data.lastName}`;
+    dispatch(setUser({ ...response.data.data, image: userImage }));
     localStorage.setItem(
       "user",
-      JSON.stringify({ ...response.data.userObj, image: userImage })
+      JSON.stringify({ ...response.data.data, image: userImage })
     );
-   
   } catch (error) {
     console.error(error.message);
     console.error(error.message);
     toast.error("Login failed");
+  }
+};
+
+export const Logout = (navigate) => (dispatch) => {
+  try {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    dispatch(setUser(null));
+    dispatch(setToken(null));
+    toast.success("Logged Out Successfully");
+    navigate("/login");
+  } catch (error) {
+    console.error(error);
+    toast.error("Failed to Logout");
   }
 };

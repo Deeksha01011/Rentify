@@ -6,18 +6,20 @@ import { IoCartOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { getAllCategories } from "../Services/operations/ItemOperations";
 import { navLinks } from "../StaticData/navbar-links";
+import ProfileDashboard from "../pages/dashboard/ProfileDashboard";
 const Navbar = () => {
   const { user } = useSelector((state) => state.profile);
+
   const { token } = useSelector((state) => state.auth);
 
   const [categories, setCategories] = useState();
 
-  const fetchCategories = async () => {
-    const res = await getAllCategories();
-    setCategories(res);
-  };
   useEffect(() => {
-    fetchCategories();
+    const fetchCategory = async () => {
+      const res = await getAllCategories();
+      setCategories(res);
+    };
+    fetchCategory();
   }, []);
 
   return (
@@ -36,7 +38,8 @@ const Navbar = () => {
           <div className="flex items-center gap-2 px-20 py-2 border border-gray-300 rounded-xl bg-white shadow-sm cursor-pointer hover:shadow-md transition-all duration-200 w-fit">
             <MapPin size={18} color="#495057" strokeWidth={2} />
             <span className="font-semibold text-gray-700 font-inter">
-              {location ? location : "Enter Location"}
+              {/* {location ? location : "Enter Location"} */}
+              Enter location
             </span>
             <FaCaretDown size={16} />
           </div>
@@ -62,12 +65,12 @@ const Navbar = () => {
                           <Link
                             className="px-[18px] py-[14px] rounded-lg bg-transparent hover:bg-richblack-100"
                             key={index}
-                            to={`/catalog/${items.name
+                            to={`/category/${items.title
                               .split(" ")
                               .join("-")
                               .toLowerCase()}`}
                           >
-                            <p>{items.name}</p>
+                            <p>{items.title}</p>
                           </Link>
                         ))
                       ) : (
@@ -77,7 +80,7 @@ const Navbar = () => {
                   </div>
                 ) : (
                   <NavLink
-                    to={item.path}
+                    to={item.link}
                     className={({ isActive }) =>
                       `cursor-pointer pb-1 ${
                         isActive
@@ -92,90 +95,31 @@ const Navbar = () => {
               </li>
             ))}
 
-            {/* CATEGORY */}
-            <div className="relative">
-              <div
-                onClick={() => setOpenCategory(!openCategory)}
-                className="flex items-center gap-1 cursor-pointer"
-              >
-                <span>CATEGORIES</span>
-                <FaCaretDown
-                  className={`transition-transform ${
-                    openCategory ? "rotate-180" : ""
-                  }`}
-                />
-              </div>
-
-              {openCategory && (
-                <div className="absolute bg-white shadow-lg rounded-lg mt-2 w-48 p-3 border border-gray-200">
-                  {[
-                    { label: "Study Materials", value: "stationery" },
-                    { label: "Electronics", value: "electronics" },
-                    { label: "Home Appliances", value: "homeappliances" },
-                    { label: "Automobiles", value: "automobiles" },
-                    { label: "Furniture", value: "furniture" },
-          ].map((cat) => (
-         <Link
-           key={cat.value}
-            to={`/products?category=${cat.value}`}
-            onClick={() => setOpenCategory(false)}
-          >
-          <p className="px-3 py-2 hover:bg-gray-200 rounded-md">
-            {cat.label}
-                      </p>
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-
             {/* ABOUT */}
-            <NavLink to="/about">
-              <li>ABOUT</li>
-            </NavLink>
-
-            {/* CONTACT */}
-            <NavLink to="/contact">
-              <li>CONTACT</li>
-            </NavLink>
           </ul>
 
           {/* 🔁 LOGIN vs PROFILE */}
-          {!isLoggedIn ? (
-            /* LOGIN BUTTON */
-            <Link
-              to="/login"
-              className="px-5 py-2 bg-[#495057] text-white font-semibold rounded-lg hover:bg-[#212529]"
-            >
-              LOGIN
-            </Link>
-          ) : (
-            <div className="flex items-center gap-4">
-              {/* 🛒 CART */}
-              <Link to="/cart" className="relative">
+
+          <div className=" hidden md:flex items-center gap-x-4">
+            {user && user.role !== "admin" && (
+              <Link to="/dashboard/cart" className="relative">
                 <IoCartOutline className="h-7 w-7" />
                 <span className="bg-[#495057] px-2 rounded-full absolute -top-2 -right-2 text-white text-xs">
                   0
                 </span>
               </Link>
+            )}
 
-              {/* 👤 PROFILE */}
-              <button
-                onClick={() => navigate("/profile")}
-                className="w-10 h-10 rounded-full overflow-hidden border border-gray-300 flex items-center justify-center bg-gray-100"
+            {token === null && (
+              <Link
+                to="/login"
+                className="px-5 py-2 bg-[#495057] text-white font-semibold rounded-lg hover:bg-[#212529]"
               >
-                {user?.avatar ? (
-                  <img
-                    src={user.avatar}
-                    alt="profile"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <User size={20} />
-                )}
-              </button>
-            </div>
-          )}
+                LOGIN
+              </Link>
+            )}
+                {token !== null && <ProfileDashboard />}
+          </div>
         </nav>
       </div>
     </div>
