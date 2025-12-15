@@ -79,7 +79,7 @@ export const dashboardLink = [
    },
 
   {
-    id: 8,
+    id: 9,
     name: "Setting",
     path: "/dashboard/setting",
     icon: <Settings />
