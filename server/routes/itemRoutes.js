@@ -24,8 +24,8 @@ const {
 // not tested yet
 // item category api
 router.post("/createcategories", authenticate, isAdmin, createCategory);
-router.post("/getcategorydetails", authenticate, getCategoryDetails);
-router.get("/getallcategories", authenticate, getAllCategories);
+router.post("/getcategorydetails", getCategoryDetails);
+router.get("/getallcategories", getAllCategories);
 
 // items api
 

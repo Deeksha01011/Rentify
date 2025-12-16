@@ -28,6 +28,7 @@ import AdminDashboard from "./pages/dashboard/admin/AdminDashboard.jsx";
 import PendingList from "./pages/dashboard/admin/PendingList.jsx";
 import ApprovedList from "./pages/dashboard/admin/ApprovedList.jsx";
 import RejectedList from "./pages/dashboard/admin/RejectedList.jsx";
+import Added_Item from "./pages/dashboard/lister/Added_Item.jsx";
 
 
 const PrivateRoute = ({ children }) => {
@@ -50,29 +51,7 @@ const AdminRoute = ({ children }) => {
 
 
 const App = () => {
-  // const { user } = useSelector((state) => state.auth);
 
-  // ===========================
-  // CONDITIONAL DASHBOARD LOGIC
-  // ===========================
-  // const getDashboard = () => {
-  //   if (!user) return <Navigate to="/login" replace />;
-
-  //   if (!user.isProfileComplete) {
-  //     return <Navigate to="/dashboard/profile" replace />;
-  //   }
-
-  //   if (user.additionalDetails?.isLister) {
-  //     if (user.additionalDetails.listerType === "business") {
-  //       return <BusinessDashboard />;
-  //     }
-  //     if (user.additionalDetails.listerType === "individual") {
-  //       return <IndividualDashboard />;
-  //     }
-  //   }
-
-  //   return <RenterDashboard />;
-  // };
 
 
 
@@ -100,12 +79,13 @@ const App = () => {
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard/my-profile" element={<Profile />} />
             <Route path="/dashboard/setting" element={<Setting/>}/>
+            <Route path="/dashboard/listed-items" element={<Added_Item/>}/>
             <Route path="/dashboard/listitems" element={<ListItem />} />
             
             <Route path="/dashboard/admin/admin-dashboard" element={<AdminDashboard />} />
-  <Route path="/dashboard/admin/pending-list" element={<PendingList />} />
-  <Route path="/dashboard/admin/approved-list" element={<ApprovedList />} />
-  <Route path="/dashboard/admin/rejected-list" element={<RejectedList />} />
+            <Route path="/dashboard/pending-list" element={<PendingList />} />
+            <Route path="/dashboard/approved-list" element={<ApprovedList />} />
+            <Route path="/dashboard/rejected-list" element={<RejectedList />} />
 
 
           </Route>

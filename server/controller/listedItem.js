@@ -9,7 +9,7 @@ const { estimatedRent } = require("../utils/estimatedCost");
 
 exports.getlistItemDetails = async (req, res) => {
   try {
-    const listingId = req.body;
+    const listingId = req.params;
     if (!listingId) {
       return res
         .status(400)

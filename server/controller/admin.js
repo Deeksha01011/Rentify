@@ -103,7 +103,7 @@ exports.getApprovedList = async (req, res) => {
 
 exports.getRejectedList = async (req, res) => {
   try {
-    const listings = await ListedItem.find({ status: "rejected" })  
+    const listings = await ListedItem.find({ status: "rejected" }).populate("item").exec()
     if (!listings) {
       return res.status(404).json({
         success: false,

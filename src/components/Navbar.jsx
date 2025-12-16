@@ -4,7 +4,7 @@ import { MapPin } from "lucide-react";
 import { FaCaretDown } from "react-icons/fa";
 import { IoCartOutline } from "react-icons/io5";
 import { useSelector } from "react-redux";
-import { getAllCategories } from "../Services/operations/ItemOperations";
+import { getAllCategories } from "../Services/operations/itemOperation";
 import { navLinks } from "../StaticData/navbar-links";
 import ProfileDashboard from "../pages/dashboard/ProfileDashboard";
 const Navbar = () => {
@@ -17,7 +17,7 @@ const Navbar = () => {
   useEffect(() => {
     const fetchCategory = async () => {
       const res = await getAllCategories();
-      setCategories(res);
+      setCategories(res?.data?.data);
     };
     fetchCategory();
   }, []);
@@ -52,25 +52,24 @@ const Navbar = () => {
 
             {navLinks.map((item, index) => (
               <li key={index}>
-                {item.title === "Category" ? (
-                  <div className="flex items-center relative  text-richblack-25 group">
+                {item.title === "CATEGORY" ? (
+                  <div className="flex items-center relative  text-gray-800 group">
                     <p>{item.title}</p>
                     <i className="ri-arrow-down-s-line text-[20px]"></i>
 
-                    <div className=" flex flex-col p-5 bg-black-100 w-[300px] invisible rounded-lg text-black-900 absolute left-[50%] top-[50%] opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-150 translate-x-[-50%] translate-y-[30%] group-hover:translate-y-[1.65em] z-10 ">
-                      <div className="absolute h-6 w-6 rotate-45 left-[50%] top-0 translate-x-[63%]  translate-y-[-40%] bg-richblack-5 rounded"></div>
+                    <div className=" flex flex-col p-5 bg-gray-200 w-[300px] invisible rounded-lg text-black-900 absolute left-[50%] top-[50%] opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-150 translate-x-[-50%] translate-y-[30%] group-hover:translate-y-[1.65em] z-10 ">
+                      <div className="absolute h-6 w-6 rotate-45 left-[50%] top-0 translate-x-[63%]  translate-y-[-40%] bg-gray-200 rounded"></div>
 
-                      {categories.length ? (
+                      {categories?.length ? (
                         categories.map((items, index) => (
                           <Link
-                            className="px-[18px] py-[14px] rounded-lg bg-transparent hover:bg-richblack-100"
                             key={index}
-                            to={`/category/${items.title
-                              .split(" ")
-                              .join("-")
-                              .toLowerCase()}`}
+                            to={`/products?category=${items.name
+                              .toLowerCase()
+                              .replace(/\s+/g, "")}`}
+                            className="px-[18px] py-[14px] rounded-lg bg-transparent hover:bg-gray-100"
                           >
-                            <p>{items.title}</p>
+                            <p>{items.name}</p>
                           </Link>
                         ))
                       ) : (
@@ -118,7 +117,7 @@ const Navbar = () => {
                 LOGIN
               </Link>
             )}
-                {token !== null && <ProfileDashboard />}
+            {token !== null && <ProfileDashboard />}
           </div>
         </nav>
       </div>
