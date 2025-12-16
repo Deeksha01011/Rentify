@@ -29,7 +29,8 @@ import PendingList from "./pages/dashboard/admin/PendingList.jsx";
 import ApprovedList from "./pages/dashboard/admin/ApprovedList.jsx";
 import RejectedList from "./pages/dashboard/admin/RejectedList.jsx";
 import Added_Item from "./pages/dashboard/lister/Added_Item.jsx";
-
+import StatusUpdatePage from "./pages/dashboard/admin/StatusUpdatePage.jsx";
+import Rent_item from "./pages/dashboard/renter/Rent_item.jsx";
 
 const PrivateRoute = ({ children }) => {
   const { token } = useSelector((state) => state.auth);
@@ -49,13 +50,7 @@ const AdminRoute = ({ children }) => {
   return children;
 };
 
-
 const App = () => {
-
-
-
-
-
   return (
     <div className="min-h-screen flex flex-col">
       <BrowserRouter>
@@ -64,10 +59,10 @@ const App = () => {
         <Routes>
           {/* PUBLIC ROUTES */}
           <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
+          <Route path="/items" element={<Products />} />
+          
 
-          <Route path="/product/:productId" element={<ProductDescription />} />
-
+          {/* <Route path="/product/:productId" element={<ProductDescription />} /> */}
 
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
@@ -82,16 +77,19 @@ const App = () => {
           {/* DASHBOARD */}
           <Route element={<DashboardLayout />}>
             <Route path="/dashboard/my-profile" element={<Profile />} />
-            <Route path="/dashboard/setting" element={<Setting/>}/>
-            <Route path="/dashboard/listed-items" element={<Added_Item/>}/>
+            <Route path="/dashboard/setting" element={<Setting />} />
+            <Route path="/dashboard/listed-items" element={<Added_Item />} />
+            <Route path="/dashboard/rented-items"  element={<Rent_item/>}/>
             <Route path="/dashboard/listitems" element={<ListItem />} />
-            
-            <Route path="/dashboard/admin/admin-dashboard" element={<AdminDashboard />} />
+            <Route
+              path="/dashboard/user/stats"
+              element={<IndividualDashboard />}
+            />
+            <Route path="/dashboard/stats" element={<AdminDashboard />} />
             <Route path="/dashboard/pending-list" element={<PendingList />} />
             <Route path="/dashboard/approved-list" element={<ApprovedList />} />
             <Route path="/dashboard/rejected-list" element={<RejectedList />} />
-
-
+            <Route path="/item/:id" element={<StatusUpdatePage />} />
           </Route>
         </Routes>
 

@@ -60,3 +60,20 @@ export const listItem = async (data, token, navigate) => {
     toast.dismiss(toastId);
   }
 };
+
+export const getLatestApprovedListings = async () => {
+  let result = [];
+  try {
+    const res = await apiconnector("GET", itemsEndpoint.APPROVED_LIST);
+
+    if (res?.data?.success) {
+      result = res.data.data;
+    } else {
+      toast.error("Failed to fetch listings");
+    }
+  } catch (error) {
+    console.log("GET APPROVED LISTINGS ERROR", error);
+    toast.error("Something went wrong");
+  }
+  return result;
+};

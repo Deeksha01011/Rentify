@@ -20,13 +20,21 @@ export const profileEndpoint = {
 
 export const itemsEndpoint = {
   CREATE_ITEM: REACT_APP_API_URL + "/items/createitem",
-  LIST_ITEMS: REACT_APP_API_URL + "/items/listitem"
+  LIST_ITEMS: REACT_APP_API_URL + "/items/listitem",
+  APPROVED_LIST : REACT_APP_API_URL + "/items/latest",
 
-}
+};
 
 export const adminEndpoint = {
-  GET_PENDING_LIST : REACT_APP_API_URL + "/admin/getpendinglists",
-  GET_APPROVED_LIST : REACT_APP_API_URL + "/admin/getapprovedlists",
-  GET_REJECTED_LIST : REACT_APP_API_URL + "/admin/rejectedLists",
-  UPDATE_STATUS : REACT_APP_API_URL + "/admin/updatestatus",
-}
+  GET_PENDING_LIST: REACT_APP_API_URL + "/admin/getpendinglists",
+  GET_APPROVED_LIST: REACT_APP_API_URL + "/admin/getapprovedlists",
+  GET_REJECTED_LIST: REACT_APP_API_URL + "/admin/rejectedLists",
+  UPDATE_STATUS: REACT_APP_API_URL + "/admin/updatelistingstatus",
+  GET_ADMIN_ANALYTICS: REACT_APP_API_URL + "/admin/adminanalytics",
+};
+
+export const userEndpoints = {
+  GET_LISTED_ITEMS: REACT_APP_API_URL + "/items/listeditems",
+  GET_USER_ANALYTICS: REACT_APP_API_URL + "/items/userdashboard",
+    GET_LIST_ITEM_DETAIL: REACT_APP_API_URL + "/items/getlistitemdetail"
+};

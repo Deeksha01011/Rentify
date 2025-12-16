@@ -15,7 +15,11 @@ const {
   getUserAnalytics,
   getlistItemDetails,
 } = require("../controller/listedItem");
-const { filterSearch } = require("../controller/ImportantController");
+const {
+  filterSearch,
+  getAllListedItems,
+  getLatestApprovedListings,
+} = require("../controller/ImportantController");
 const {
   getAllRatingReviews,
   createRatingAndReview,
@@ -31,10 +35,15 @@ router.get("/getallcategories", getAllCategories);
 
 router.post("/createitem", authenticate, createItem);
 router.post("/listitem", authenticate, listItem);
-router.get("/getlistitemdetail", authenticate, getlistItemDetails);
+router.post("/getlistitemdetail", authenticate, getlistItemDetails);
+router.get(
+  "/latest",
+  // agar admin-only chahiye toh
+  getLatestApprovedListings
+);
 
 // listed items api
-router.get("/listeditems", authenticate, getMyListings);
+router.get("/listeditems", authenticate, getAllListedItems);
 router.post("/updatelisting", authenticate, updateListing);
 router.delete("/deletelisting", authenticate, deleteListing);
 router.get("/userdashboard", authenticate, getUserAnalytics);

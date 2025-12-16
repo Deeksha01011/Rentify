@@ -4,9 +4,8 @@ import {
   User,
   Package,
   Heart,
-TrendingUp ,
+  TrendingUp,
   Settings,
- 
   PackageCheck,
 } from "lucide-react";
 // import { useSelector } from "react-redux";
@@ -18,28 +17,28 @@ export const dashboardLink = [
     id: 1,
     name: "my Profile",
     path: "/dashboard/my-profile",
-    icon: <User/>
+    icon: <User />,
   },
   {
     id: 2,
     name: "Pending List",
     path: "/dashboard/pending-list",
     type: ACCOUNT_TYPE.ADMIN,
-    icon: <PackageOpen />
+    icon: <PackageOpen />,
   },
   {
     id: 3,
     name: "Approved List",
     path: "/dashboard/approved-list",
     type: ACCOUNT_TYPE.ADMIN,
-    icon: <PackageCheck />
+    icon: <PackageCheck />,
   },
   {
     id: 4,
     name: "Rejected List",
     path: "/dashboard/rejected-list",
     type: ACCOUNT_TYPE.ADMIN,
-    icon: <PackageX />
+    icon: <PackageX />,
   },
   //   {
   //     id: 5,
@@ -54,34 +53,40 @@ export const dashboardLink = [
     name: "Rented Items",
     path: "/dashboard/rented-items",
     type: ACCOUNT_TYPE.USER,
-    icon: <LayoutDashboard />
+    icon: <LayoutDashboard />,
   },
   {
     id: 6,
     name: "Listed Items",
     path: "/dashboard/listed-items",
     type: ACCOUNT_TYPE.USER,
-    icon: <Package />
+    icon: <Package />,
   },
   {
     id: 7,
     name: "Wishlist",
     path: "/dashboard/wishlist",
     type: ACCOUNT_TYPE.USER,
-    icon: <Heart />
+    icon: <Heart />,
   },
-   {
-
-    id:8,
-    name:"Stats",
-    path:"/dashboard/stats",
-    icon:<TrendingUp/>
-   },
-
   {
-    id: 9,
+    id: 8,
+    name: "Stats",
+    path: "/dashboard/stats",
+    type: ACCOUNT_TYPE.ADMIN,
+    icon: <TrendingUp />,
+  },
+  {
+    id: 8,
+    name: "Stats",
+    path: "/dashboard/user/stats",
+    type: ACCOUNT_TYPE.USER,
+    icon: <TrendingUp />,
+  },
+  {
+    id: 10,
     name: "Setting",
     path: "/dashboard/setting",
-    icon: <Settings />
+    icon: <Settings />,
   },
 ];

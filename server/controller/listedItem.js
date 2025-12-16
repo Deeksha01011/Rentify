@@ -9,13 +9,14 @@ const { estimatedRent } = require("../utils/estimatedCost");
 
 exports.getlistItemDetails = async (req, res) => {
   try {
-    const listingId = req.params;
-    if (!listingId) {
+    const { id } = req.body;
+    console.log("id nhi aa rhi", id);
+    if (!id) {
       return res
         .status(400)
         .json({ success: false, message: "ListingId is required" });
     }
-    const itemDetails = await ListedItem.findById(listingId)
+    const itemDetails = await ListedItem.findById(id)
       .populate({ path: "item", populate: { path: "category" } })
       .populate({ path: "listedBy", populate: { path: "additionalDetails" } });
     if (!itemDetails) {
@@ -135,7 +136,8 @@ exports.updateListing = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "Listing updated successfully. Awaiting approval if required.",
-      listing,newRent
+      listing,
+      newRent,
     });
   } catch (error) {
     console.log("Error in updateListing controller:", error);
@@ -148,7 +150,7 @@ exports.updateListing = async (req, res) => {
 
 exports.deleteListing = async (req, res) => {
   try {
-    const  listingId  = req.body;
+    const listingId = req.body;
 
     // Find listing with item details
     const listing = await ListedItem.findOne({
@@ -202,7 +204,9 @@ exports.getUserAnalytics = async (req, res) => {
     // Fetch all listings created by this lister
     const listings = await ListedItem.find({ listedBy: listerId }).populate(
       "item"
-    );
+    )
+    console.log(listings);
+    // Fetch all rented items by this lister
     const rentedItems = await RentedItem.find({ rentedBy: listerId }).populate(
       "item"
     );
@@ -247,8 +251,7 @@ exports.getUserAnalytics = async (req, res) => {
         pending,
         totalEarnings,
         totalRentedItems: rentedItems.length,
-        listings
-
+        listings,
       },
     });
   } catch (error) {

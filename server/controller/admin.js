@@ -6,7 +6,7 @@ const { sendEmail } = require("../utils/Nodemailer");
 exports.getPendingListings = async (req, res) => {
   try {
     const listings = await ListedItem.find({ status: "pending" })
-      .populate("item")
+      .populate({ path: "item", populate: { path: "category" } })
       .populate("listedBy", "name email");
     if (!listings) {
       return res.status(404).json({
@@ -30,7 +30,8 @@ exports.getPendingListings = async (req, res) => {
 
 exports.updateListingStatus = async (req, res) => {
   try {
-    const { listingId, status, reason } = req.body;
+    const { listingId, status } = req.body;
+    console.log(listingId, status);
     if (!listingId || !status) {
       return res.status(400).json({
         success: false,
@@ -51,16 +52,15 @@ exports.updateListingStatus = async (req, res) => {
       listing.isActive = true;
       listing.listedOn = new Date();
     }
-    if (status === "rejected" && reason) {
+    if (status === "rejected") {
       listing.isActive = false;
       // Optionally, you can store the reason for rejection in the listing schema
-      listing.rejectionReason = reason;
     }
     await listing.save();
     await sendEmail(
       listing.listedBy.email,
       `Your item listing has been ${status} - Rentify`,
-      statusTemplate(status, listing.item.itemName, reason)
+      statusTemplate(status, listing.item.itemName)
     );
     return res.status(200).json({
       success: true,
@@ -103,7 +103,9 @@ exports.getApprovedList = async (req, res) => {
 
 exports.getRejectedList = async (req, res) => {
   try {
-    const listings = await ListedItem.find({ status: "rejected" }).populate("item").exec()
+    const listings = await ListedItem.find({ status: "rejected" })
+      .populate("item")
+      .exec();
     if (!listings) {
       return res.status(404).json({
         success: false,
@@ -123,7 +125,6 @@ exports.getRejectedList = async (req, res) => {
     });
   }
 };
-
 
 exports.adminDashboard = async (req, res) => {
   try {
@@ -179,7 +180,6 @@ exports.adminDashboard = async (req, res) => {
           rejectedLists,
           activeItems,
           totalRentedItems,
-
         },
         revenue,
       },

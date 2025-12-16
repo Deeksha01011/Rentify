@@ -96,7 +96,7 @@ exports.filterSearch = async (req, res) => {
 exports.getAllListedItems = async (req, res) => {
   try {
     const Items = await ListedItem.find()
-      .populate("item")
+      .populate({ path: "item", populate: { path: "category" } })
       .populate("estimateRent")
       .exec();
     return res.status(200).json({
@@ -109,6 +109,30 @@ exports.getAllListedItems = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: `Server Error: ${error.message}`,
+    });
+  }
+};
+exports.getLatestApprovedListings = async (req, res) => {
+  try {
+    const approvedListings = await ListedItem.find({
+      status: "approved",
+      // isActive: true,
+    })
+      .populate({ path: "item", populate: { path: "category" } }) // item details
+      .populate("listedBy") // user details
+      .sort({ createdAt: -1 }) // latest first
+      .limit(5); // sirf 5 items
+
+    return res.status(200).json({
+      success: true,
+      message: "Latest approved listings fetched successfully",
+      data: approvedListings,
+    });
+  } catch (error) {
+    console.error("Error fetching approved listings:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server Error: " + error.message,
     });
   }
 };

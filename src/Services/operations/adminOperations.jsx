@@ -48,15 +48,23 @@ export const getApprovedList = async (token) => {
   }
 };
 
-export const updateStatus = async (data, token) => {
+export const updateStatus = async (listingId, status, token,naviagte) => {
+  console.log(listingId, status, token);
   const toastId = toast.loading("Loading...");
   try {
-    const res = await apiconnector("POST", adminEndpoint.UPDATE_STATUS, data, {
-      Authorization: `Bearer ${token}`,
-    });
+    const res = await apiconnector(
+      "POST",
+      adminEndpoint.UPDATE_STATUS,
+      { listingId, status },
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
     console.log("UPDATE_STATUS API RESPONSE", res);
     if (res.data.success) {
       toast.success("Status updated successfully");
+      naviagte('/dashboard/approved-list')
+
       //   return res.data.data;
     }
   } catch (error) {
@@ -82,6 +90,34 @@ export const getRejectedItem = async (token) => {
       toast.success("Rejected List fetched successfully");
       return res.data.data;
     }
+  } catch (error) {
+    console.log(error);
+    toast.error(error.message);
+  } finally {
+    toast.dismiss(toastId);
+  }
+};
+
+export const getAdminAnalytics = async (token) => {
+  const toastId = toast.loading("Loading...");
+
+  try {
+    const res = await apiconnector(
+      "GET",
+      adminEndpoint.GET_ADMIN_ANALYTICS,
+      {},
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    if (!res.data.success) {
+      throw new Error(res.data.message);
+    }
+    toast.success("Admin Analytics fetched successfully");
+    console.log("GET_ADMIN_ANALYTICS API RESPONSE", res);
+    console.log(res.data.dashboard);
+    return res.data.dashboard;
   } catch (error) {
     console.log(error);
     toast.error(error.message);
