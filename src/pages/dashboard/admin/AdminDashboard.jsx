@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { axiosInstance } from "../../../Services/apiConnector";
 import { Package, CheckCircle, Clock, XCircle, Activity } from "lucide-react";
 import { motion } from "framer-motion";
-import { fetchAdminAnalytics } from "../../../Services/operations/adminOperations";
+// import { fetchAdminAnalytics } from "../../../Services/operations/adminOperations";
 import { useSelector } from "react-redux";
 
 const StatCard = ({ icon, label, value, color }) => (

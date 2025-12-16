@@ -100,13 +100,7 @@ const Login = () => {
                 Forgot Password?
               </Link>
             {/* Remember + Forgot Password */}
-            <div className="w-full flex items-center justify-between mt-2">
-  
-              <div className="flex items-center">
-                <input type="checkbox" className="w-4 h-4 mr-2" />
-                <p className="text-sm text-[#495057]">Remember me</p>
-              </div>
-            </div>
+            
           </div>
 
             {/* Login Button */}

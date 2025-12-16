@@ -24,7 +24,7 @@ const ProfileDashboard = () => {
           alt={`profile-${user.firstName}`}
           className="aspect-square w-[30px] rounded-full object-cover"
         ></img>
-        <i class="ri-arrow-down-s-fill text-richblack-100 text-lg"></i>
+        <i className="ri-arrow-down-s-fill text-richblack-100 text-lg"></i>
       </div>
 
       {open && (

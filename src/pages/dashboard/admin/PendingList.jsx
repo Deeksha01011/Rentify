@@ -35,7 +35,10 @@ export default function PendingList() {
   //   onUpdate({ listingId: id, status, reason });
   //   setRejectReason("");
   //   setSelectedId(null);
-  // };
+  //
+    // 
+  };
+
 
   return (
     <div className="space-y-6">
@@ -48,7 +51,14 @@ export default function PendingList() {
         >
           <div className="flex justify-between items-start">
             <div>
-              <h3 className="font-bold text-lg">{listing?.item?.itemName}</h3>
+              <Link to={`/dashboard/admin/listing/${listing._id}`}
+              state={{listing}}
+              >
+  <h3 className="font-bold text-lg text-blue-600 hover:underline cursor-pointer">
+    {listing?.item?.itemName}
+  </h3>
+</Link>
+
               <p className="text-sm text-gray-500">
                 By {listing.listedBy.name} ({listing.listedBy.email})
               </p>

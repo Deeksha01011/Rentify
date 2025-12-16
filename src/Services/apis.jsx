@@ -20,7 +20,9 @@ export const profileEndpoint = {
 
 export const itemsEndpoint = {
   CREATE_ITEM: REACT_APP_API_URL + "/items/createitem",
-  LIST_ITEMS: REACT_APP_API_URL + "/items/listitem"
+  LIST_ITEMS: REACT_APP_API_URL + "/items/listitem",
+  GET_ALL_LISTED_ITEMS: REACT_APP_API_URL + "/items/getalllisteditems",
+  GET_LISTED_ITEM_DETAILS: REACT_APP_API_URL + "/items/getlistitemdetail"
 
 }
 

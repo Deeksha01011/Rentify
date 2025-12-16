@@ -28,9 +28,11 @@ import AdminDashboard from "./pages/dashboard/admin/AdminDashboard.jsx";
 import PendingList from "./pages/dashboard/admin/PendingList.jsx";
 import ApprovedList from "./pages/dashboard/admin/ApprovedList.jsx";
 import RejectedList from "./pages/dashboard/admin/RejectedList.jsx";
-import ProductDetails from "./pages/product/ProductDetails.jsx";
+import ProductDetails from "./pages/product/ProductDetails";
 import Added_Item from "./pages/dashboard/lister/Added_Item.jsx";
-
+import ListingDetails from "./pages/dashboard/admin/ListingDetails";
+import Checkout from "./pages/checkout/Checkout.jsx";
+import Payment from "./pages/payment/Payment.jsx";
 
 const PrivateRoute = ({ children }) => {
   const { token } = useSelector((state) => state.auth);
