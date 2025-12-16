@@ -3,6 +3,7 @@ const Profile = require("../model/profile");
 const { cloudinaryUpload } = require("../utils/cloudinaryUpload");
 const ListedItem = require("../model/listedItem");
 const Renteditem = require("../model/rentedItem");
+const bcrypt = require("bcrypt");
 
 exports.updateProfile = async (req, res) => {
   try {
@@ -17,7 +18,7 @@ exports.updateProfile = async (req, res) => {
       listerType,
       companyName,
       gstNumber,
-      aadhaarNumber,
+      aadharNumber,
       accountHolderName,
       accountNumber,
       ifscCode,
@@ -39,7 +40,7 @@ exports.updateProfile = async (req, res) => {
     );
     console.log(user);
     if (isLister) {
-      if (listerType === "individual" && !aadhaarNumber) {
+      if (listerType === "individual" && !aadharNumber) {
         return res
           .status(400)
           .json({ success: false, message: "Aadhaar number is required" });
@@ -62,7 +63,7 @@ exports.updateProfile = async (req, res) => {
       listerType,
       companyName,
       gstNumber,
-      aadhaarNumber,
+      aadharNumber,
       accountHolderName,
       accountNumber,
       ifscCode,
@@ -74,12 +75,14 @@ exports.updateProfile = async (req, res) => {
     profileDetails.city = city;
     profileDetails.state = state;
     profileDetails.country = country;
+    profileDetails.gender = req.body.gender;
+    profileDetails.dateOfBirth = req.body.dateOfBirth;
 
     profileDetails.isLister = isLister;
     if (isLister) {
       if (listerType === "individual") {
         profileDetails.listerType = "individual";
-        profileDetails.aadhaarNumber = aadhaarNumber;
+        profileDetails.aadharNumber = aadharNumber;
         profileDetails.accountHolderName = accountHolderName;
         profileDetails.accountNumber = accountNumber;
         profileDetails.ifscCode = ifscCode;
@@ -97,7 +100,7 @@ exports.updateProfile = async (req, res) => {
       profileDetails.listerType = null;
       profileDetails.companyName = null;
       profileDetails.gstNumber = null;
-      profileDetails.aadhaarNumber = null;
+      profileDetails.aadharNumber = null;
       profileDetails.accountHolderName = null;
       profileDetails.accountNumber = null;
       profileDetails.ifscCode = null;
@@ -170,11 +173,10 @@ const validatesize = (file) => {
 
 exports.updateProfilePicture = async (req, res) => {
   try {
-
-    console.log("backend me hu")
+    console.log("backend me hu");
     const userId = req.user.userId;
     const file = req.files.profilePicture;
-    console.log("backend wala call",file);
+    console.log("backend wala call", file);
     console.log(userId);
 
     if (!userId || !file) {
@@ -217,6 +219,7 @@ exports.updateProfilePicture = async (req, res) => {
       success: true,
       message: "Profile picture updated successfully",
       data: user,
+      Result,
     });
   } catch (error) {
     return res.status(500).json({
@@ -274,3 +277,74 @@ exports.deleteUserprofile = async (req, res) => {
     });
   }
 };
+
+// exports.changePassword = async (req, res) => {
+//   try {
+//     // Get user data from req.user
+//     const userDetails = await User.findById(req.user.id);
+//     if (!userDetails) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "User not found",
+//       });
+//     }
+    
+
+//     // Get old password, new password, and confirm new password from req.body
+//     const { oldPassword, newPassword } = req.body;
+
+//     // Validate old password
+//     const isPasswordMatch = await bcrypt.compare(
+//       oldPassword,
+//       userDetails.password
+//     );
+//     if (!isPasswordMatch) {
+//       // If old password does not match, return a 401 (Unauthorized) error
+//       return res
+//         .status(401)
+//         .json({ success: false, message: "The password is incorrect" });
+//     }
+
+//     // Update password
+//     const encryptedPassword = await bcrypt.hash(newPassword, 10);
+//     const updatedUserDetails = await User.findByIdAndUpdate(
+//       req.user.id,
+//       { password: encryptedPassword },
+//       { new: true }
+//     );
+
+//     // Send notification email
+//     // try {
+//     //   const emailResponse = await mailSender(
+//     //     updatedUserDetails.email,
+//     //     "Password for your account has been updated",
+//     //     passwordUpdated(
+//     //       updatedUserDetails.email,
+//     //       `Password updated successfully for ${updatedUserDetails.firstName} ${updatedUserDetails.lastName}`
+//     //     )
+//     //   );
+//     //   console.log("Email sent successfully:", emailResponse.response);
+//     // } catch (error) {
+//     //   // If there's an error sending the email, log the error and return a 500 (Internal Server Error) error
+//     //   console.error("Error occurred while sending email:", error);
+//     //   return res.status(500).json({
+//     //     success: false,
+//     //     message: "Error occurred while sending email",
+//     //     error: error.message,
+//     //   });
+//     // }
+
+//     // Return success response
+//     return res
+//       .status(200)
+//       .json({ success: true, message: "Password updated successfully" });
+//   } catch (error) {
+//     // If there's an error updating the password, log the error and return a 500 (Internal Server Error) error
+//     console.error("Error occurred while updating password:", error);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Error occurred while updating password",
+//       error: error.message,
+//     });
+//   }
+// };

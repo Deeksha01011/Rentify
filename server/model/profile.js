@@ -6,6 +6,12 @@ const profileSchema = new mongoose.Schema(
       type: String,
       // required: true,
     },
+    gender: {
+      type: String,
+    },
+     dateOfBirth: {
+    type: String,
+  },
     city: {
       type: String,
       // required: true,
@@ -39,7 +45,7 @@ const profileSchema = new mongoose.Schema(
     },
 
     // Sirf individual ke liye
-    aadhaarNumber: {
+    aadharNumber: {
       type: String,
       default: null,
     },
