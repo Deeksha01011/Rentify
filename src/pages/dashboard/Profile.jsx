@@ -110,19 +110,20 @@ const Profile = () => {
         </div>
       </div>
 
-      {user?.additionalDetails?.isLister === "yes" &&
-      user?.additionalDetails?.listerType === "individual" ? (
+      {user?.role !== "admin" &&
+      user?.additionalDetails?.isLister === "business" ? (
         <div className="bg-gray-200 p-6 rounded-xl shadow-sm">
           <div className="flex justify-between mb-4">
             <h3 className="font-semibold italic text-lg">Additional Details</h3>
             <Link
               to={"/dashboard/setting"}
-              className="text-green-800 italic border-b border-green-900 cursor-pointer">
+              className="text-green-800 italic border-b border-green-900 cursor-pointer"
+            >
               Edit
             </Link>
           </div>
 
-       <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div className="">
               <p className="text-gray-800 text-lg font-semibold">
                 Lister Type{" "}
@@ -132,9 +133,7 @@ const Profile = () => {
               </p>
             </div>
             <div className="">
-              <p className="text-gray-800 text-lg font-semibold">
-                GST Number
-              </p>{" "}
+              <p className="text-gray-800 text-lg font-semibold">GST Number</p>{" "}
               <p className="italic text-md font-semibold text-gray-500">
                 {user?.additionalDetails?.gstNumber}
               </p>
@@ -169,11 +168,14 @@ const Profile = () => {
             </div>
           </div>
         </div>
-      ) : (
+      ) : user?.additionalDetails?.listerType === "individual" ? (
         <div className="bg-gray-200 p-6 rounded-xl shadow-sm">
           <div className="flex justify-between mb-4">
             <h3 className="font-semibold italic text-lg">Additional Details</h3>
-            <Link to={"/dashboard/setting"} className="text-green-800 italic border-b border-green-900 cursor-pointer">
+            <Link
+              to={"/dashboard/setting"}
+              className="text-green-800 italic border-b border-green-900 cursor-pointer"
+            >
               Edit
             </Link>
           </div>
@@ -225,7 +227,7 @@ const Profile = () => {
             </div>
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

@@ -5,7 +5,6 @@ import { profileEndpoint } from "../apis";
 import { Logout } from "./Authoperations";
 
 export const updateProfilePicture = (token, formData) => async (dispatch) => {
-
   const toastId = toast.loading("Loading...");
   try {
     const response = await apiconnector(
@@ -52,7 +51,7 @@ export const updateProfile = (token, data) => async (dispatch) => {
     );
 
     console.log("UPDATE_PROFILE_API API RESPONSE............", response);
-    if (response.data.data.succes) {
+    if (response.data.succes) {
       toast.success("Profile Updated Successfully");
       dispatch(setUser(response.data.data));
     } else {
@@ -119,7 +118,6 @@ export const deleteAccount = (token, navigate) => async (dispatch) => {
   toast.dismiss(toastId);
 };
 export const getUserDetails = async (token) => {
-  
   try {
     const res = await apiconnector(
       "GET",
@@ -140,5 +138,4 @@ export const getUserDetails = async (token) => {
     console.error(error);
     toast.error("Could Not Get User Details");
   }
-
 };

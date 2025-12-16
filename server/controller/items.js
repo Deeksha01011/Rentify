@@ -2,16 +2,28 @@ const User = require("../model/user");
 const Item = require("../model/item");
 const ListedItem = require("../model/listedItem");
 const { cloudinaryUpload } = require("../utils/cloudinaryUpload");
-const {sendEmail} = require("../utils/Nodemailer");
+const { sendEmail } = require("../utils/Nodemailer");
 const statusTemplate = require("../mail/stateTemplate");
 const categories = require("../model/categories");
-const { estimatedRent} = require("../utils/estimatedCost")
+const { estimatedRent } = require("../utils/estimatedCost");
 
 exports.createItem = async (req, res) => {
   try {
-    const { itemName, description, category, costPrice, monthUsed } = req.body;
+    const {
+      itemName,
+      description,
+      category,
+      costPrice,
+      monthUsed,
+    } = req.body;
     console.log("req.body:", req.body);
-    if (!itemName || !description || !category || !costPrice || !monthUsed) {
+    if (
+      !itemName ||
+      !description ||
+      !category ||
+      !costPrice ||
+      !monthUsed 
+    ) {
       return res.status(401).json({
         success: false,
         message: "All fields are required",
@@ -19,6 +31,7 @@ exports.createItem = async (req, res) => {
     }
 
     const categoryExists = await categories.findOne({ name: category });
+    console.log("categoryExists:", categoryExists);
     if (!categoryExists) {
       return res.status(401).json({
         success: false,
@@ -63,6 +76,7 @@ exports.createItem = async (req, res) => {
       monthUsed: monthUsed,
       invoice: invoiceUrl?.secure_url,
       itemImages: images,
+    
     });
 
     console.log("items: ", item);
@@ -86,7 +100,7 @@ exports.createItem = async (req, res) => {
 
 exports.listItem = async (req, res) => {
   try {
-    const { item, estimatedRent, platformFee, listersEarning, listingPeriod } =
+    const { item, estimateRent, platformFee, listersEarning, listingPeriod } =
       req.body;
     const userId = req.user.userId;
 
@@ -97,7 +111,7 @@ exports.listItem = async (req, res) => {
       });
     }
 
-    if (!item || !estimatedRent || !platformFee || !listersEarning) {
+    if (!item || !estimateRent || !platformFee || !listersEarning) {
       return res.status(401).json({
         success: false,
         message: "All fields are required",
@@ -107,7 +121,7 @@ exports.listItem = async (req, res) => {
       item: item,
       listedBy: userId,
       status: "pending",
-      estimatedRent: estimatedRent,
+      estimateRent: estimateRent,
       platformFee: platformFee,
       listersEarning: listersEarning,
       listedOn: null,

@@ -17,3 +17,16 @@ export const profileEndpoint = {
   DELETE_ACCOUNT_URL: REACT_APP_API_URL + "/profile/deleteaccount",
   GET_USER_DETAILS: REACT_APP_API_URL + "/profile/getuserdeatils",
 };
+
+export const itemsEndpoint = {
+  CREATE_ITEM: REACT_APP_API_URL + "/items/createitem",
+  LIST_ITEMS: REACT_APP_API_URL + "/items/listitem"
+
+}
+
+export const adminEndpoint = {
+  GET_PENDING_LIST : REACT_APP_API_URL + "/admin/getpendinglists",
+  GET_APPROVED_LIST : REACT_APP_API_URL + "/admin/getapprovedlists",
+  GET_REJECTED_LIST : REACT_APP_API_URL + "/admin/rejectedLists",
+  UPDATE_STATUS : REACT_APP_API_URL + "/admin/updatestatus",
+}
