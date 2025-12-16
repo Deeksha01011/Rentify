@@ -69,7 +69,6 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
 
-          <Route path="/product/:productId" element={<ProductDetails />} />
 
 
           <Route path="/about" element={<About />} />
@@ -94,11 +93,19 @@ const App = () => {
             <Route path="/dashboard/approved-list" element={<ApprovedList />} />
             <Route path="/dashboard/rejected-list" element={<RejectedList />} />
 
+            <Route
+             path="/dashboard/admin/listing/:id"
+              element={<ListingDetails />}
+              />
+
 
           </Route>
 
       
 <Route path="/product/:id" element={<ProductDetails />} />
+<Route path="/checkout/:id" element={<Checkout />} />
+<Route path="/payment/:id" element={<Payment />} />
+
 
         </Routes>
 

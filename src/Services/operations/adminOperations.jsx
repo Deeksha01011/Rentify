@@ -89,3 +89,29 @@ export const getRejectedItem = async (token) => {
     toast.dismiss(toastId);
   }
 };
+
+export const getListingDetails = async (listingId, token) => {
+  const toastId = toast.loading("Loading...");
+  try {
+    const res = await apiconnector(
+      "GET",
+      `${adminEndpoint.GET_LISTING_DETAILS}/${listingId}`,
+      {},
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    console.log("GET_LISTING_DETAILS API RESPONSE", res);
+
+    if (res.data.success) {
+      toast.success("Listing details fetched");
+      return res.data.data;
+    }
+  } catch (error) {
+    console.log("GET_LISTING_DETAILS ERROR", error);
+    toast.error(error.message);
+  } finally {
+    toast.dismiss(toastId);
+  }
+};

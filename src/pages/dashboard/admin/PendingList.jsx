@@ -1,4 +1,5 @@
 import { Check, X } from "lucide-react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import {
@@ -29,7 +30,6 @@ export default function PendingList() {
       await updateStatus(listingId, status, reason);
     } catch (error) {
       console.log(error);
-    }
   };
   // const updateStatus = (id, status, reason = "") => {
   //   onUpdate({ listingId: id, status, reason });
@@ -38,7 +38,6 @@ export default function PendingList() {
   //
     // 
   };
-
 
   return (
     <div className="space-y-6">
@@ -57,6 +56,7 @@ export default function PendingList() {
   <h3 className="font-bold text-lg text-blue-600 hover:underline cursor-pointer">
     {listing?.item?.itemName}
   </h3>
+
 </Link>
 
               <p className="text-sm text-gray-500">

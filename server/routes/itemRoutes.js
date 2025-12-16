@@ -15,7 +15,7 @@ const {
   getUserAnalytics,
   getlistItemDetails,
 } = require("../controller/listedItem");
-const { filterSearch } = require("../controller/ImportantController");
+const { filterSearch, getAllListedItems } = require("../controller/ImportantController");
 const {
   getAllRatingReviews,
   createRatingAndReview,
@@ -32,6 +32,7 @@ router.get("/getallcategories", getAllCategories);
 router.post("/createitem", authenticate, createItem);
 router.post("/listitem", authenticate, listItem);
 router.get("/getlistitemdetail", authenticate, getlistItemDetails);
+router.get("/getalllisteditems", authenticate, getAllListedItems)
 
 // listed items api
 router.get("/listeditems", authenticate, getMyListings);

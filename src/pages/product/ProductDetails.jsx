@@ -1,22 +1,47 @@
 import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { GiShoppingBag } from "react-icons/gi";
+import { FaRegClock, FaCreditCard } from "react-icons/fa";
 import allProducts from "../../data/products";
+import { calculateRentalCost } from "../../utils/rentalCalculator";
 
 import ImageGallery from "./components/ImageGallery";
-import RentPlans from "./components/RentPlans";
 import SellerInfo from "./components/SellerInfo";
 import SpecsTable from "./components/SpecsTable";
-import PriceBreakdown from "./components/PriceBreakdown";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const product = allProducts.find((p) => p.id === Number(id));
-
   const [selectedMonth, setSelectedMonth] = useState(1);
 
   if (!product) {
     return <div className="text-center mt-24 text-[#6c757d]">Product not found</div>;
   }
+
+  const breakdown = calculateRentalCost([product.price, selectedMonth]);
+
+  // ===== Steps cards data =====
+  const steps = [
+    {
+      title: "Select Product",
+      desc: "Choose your desired product from our wide range of options.",
+      icon: <GiShoppingBag className="text-3xl text-[#212529]" />,
+    },
+    {
+      title: "Select Rental Period",
+      desc: "Decide the rental duration that suits you best.",
+      icon: <FaRegClock className="text-3xl text-[#212529]" />,
+    },
+    {
+      title: "Pay & Enjoy",
+      desc: "Make payment securely and enjoy hassle-free renting.",
+      icon: <FaCreditCard className="text-3xl text-[#212529]" />,
+    },
+  ];
+
+  // ===== Duration selection cards =====
+  const durations = [1, 3, 6, 12];
 
   return (
     <div className="bg-[#f8f9fa] min-h-screen py-10">
