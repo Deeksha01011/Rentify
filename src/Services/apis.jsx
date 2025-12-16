@@ -13,3 +13,7 @@ export const categoriesEndpoint = {
 export const profileEndpoint = {
   UPDATE_PROFILE_PICTURE: "/profile/uploadprofileimage"
 }
+
+export const adminEndpoints ={
+  ADMIN_ANALYTICS :  REACT_APP_API_URL+"/admin/adminanalytics"
+}
