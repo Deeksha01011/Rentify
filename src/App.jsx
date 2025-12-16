@@ -43,7 +43,7 @@ const PrivateRoute = ({ children }) => {
 const AdminRoute = ({ children }) => {
   const { user } = useSelector((state) => state.auth);
 
-  if (!user || user.accountType !== "ADMIN") {
+  if (!user || user.accountType !== "admin") {
     return <Navigate to="/dashboard/my-profile" replace />;
   }
   return children;
@@ -65,6 +65,10 @@ const App = () => {
           {/* PUBLIC ROUTES */}
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
+
+          <Route path="/product/:productId" element={<ProductDescription />} />
+
+
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
