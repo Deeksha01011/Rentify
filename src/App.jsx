@@ -28,6 +28,7 @@ import AdminDashboard from "./pages/dashboard/admin/AdminDashboard.jsx";
 import PendingList from "./pages/dashboard/admin/PendingList.jsx";
 import ApprovedList from "./pages/dashboard/admin/ApprovedList.jsx";
 import RejectedList from "./pages/dashboard/admin/RejectedList.jsx";
+import ProductDetails from "./pages/product/ProductDetails.jsx";
 
 
 const PrivateRoute = ({ children }) => {
@@ -87,7 +88,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
 
-          <Route path="/product/:productId" element={<ProductDescription />} />
+          <Route path="/product/:productId" element={<ProductDetails />} />
 
 
           <Route path="/about" element={<About />} />
@@ -113,6 +114,10 @@ const App = () => {
 
 
           </Route>
+
+      
+<Route path="/product/:id" element={<ProductDetails />} />
+
         </Routes>
 
         <Footer />

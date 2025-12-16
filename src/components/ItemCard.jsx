@@ -1,8 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 import { CiHeart } from "react-icons/ci"
 
 const ItemCard = ({ itemData }) => {
   return (
+    <Link to={`/product/${itemData.id}`}>
     <div className="w-[90%] relative h-88  border border-gray-300 rounded-xl shadow-sm hover:shadow-xl hover:scale-105 transition-transform transition-all duration-300 cursor-pointer overflow-hidden flex flex-col">
       {/* Image Section */}
 
@@ -49,6 +52,7 @@ const ItemCard = ({ itemData }) => {
         </div>
       </div>
     </div>
+    </Link>
   );
 };
 
