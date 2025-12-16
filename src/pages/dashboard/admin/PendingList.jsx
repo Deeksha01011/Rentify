@@ -1,4 +1,5 @@
 import { Check, X } from "lucide-react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { IndianRupee } from "lucide-react";
@@ -52,7 +53,9 @@ export default function PendingList() {
   //   onUpdate({ listingId: id, status, reason });
   //   setRejectReason("");
   //   setSelectedId(null);
-  // };
+  //
+    // 
+  };
 
   return (
     <div className="space-y-6">

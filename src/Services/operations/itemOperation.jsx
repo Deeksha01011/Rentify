@@ -77,3 +77,42 @@ export const getLatestApprovedListings = async () => {
   }
   return result;
 };
+export const getAllItems = async (token) => {
+  try {
+    const response = await apiconnector(
+      "GET",
+      itemsEndpoint.GET_ALL_LISTED_ITEMS,
+      {},
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+    if (response.data.success) {
+      console.log("ALL ITEMS LISTED HERE",response.data);
+
+      return response;
+    }
+  } catch (error) {
+    console.log(error.message);
+  } 
+}
+
+export const getListedItemDetail = async (token) => {
+  try {
+    const response = await apiconnector(
+      "GET",
+      itemsEndpoint.GET_LISTED_ITEM_DETAILS,
+      
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+    if (response.data.success) {
+      console.log("ALL ITEMS LISTED HERE",response.data);
+
+      return response;
+    }
+  } catch (error) {
+    console.log(error.message);
+  } 
+}

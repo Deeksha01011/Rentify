@@ -41,6 +41,8 @@ router.get(
   // agar admin-only chahiye toh
   getLatestApprovedListings
 );
+router.get("/getlistitemdetail", authenticate, getlistItemDetails);
+router.get("/getalllisteditems", authenticate, getAllListedItems)
 
 // listed items api
 router.get("/listeditems", authenticate, getAllListedItems);

@@ -67,6 +67,9 @@ const Products = () => {
 
   const [collapsed, setCollapsed] = useState(false);
   const [fadeIn, setFadeIn] = useState(false);
+  const[listedItem, setListedItem]=useState([])
+  
+  
 
   /* ================= FADE ANIMATION ================= */
   useEffect(() => {
@@ -118,6 +121,7 @@ const Products = () => {
         </Link>
       </div>
 
+{/*
       <div>
         <Link to="/dashboard/admin/admin-dashboard">
         <button className="mt-6 ml-10 px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm hover:shadow-md transition">
@@ -125,6 +129,7 @@ const Products = () => {
         </button>
         </Link>
       </div>
+
 
       {/* ================= MAIN CONTENT ================= */}
       <div className="w-11/12 max-w-maxContent mx-auto py-10 flex gap-8">

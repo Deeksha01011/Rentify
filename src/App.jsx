@@ -28,9 +28,16 @@ import AdminDashboard from "./pages/dashboard/admin/AdminDashboard.jsx";
 import PendingList from "./pages/dashboard/admin/PendingList.jsx";
 import ApprovedList from "./pages/dashboard/admin/ApprovedList.jsx";
 import RejectedList from "./pages/dashboard/admin/RejectedList.jsx";
+import ProductDetails from "./pages/product/ProductDetails";
 import Added_Item from "./pages/dashboard/lister/Added_Item.jsx";
+<<<<<<< HEAD
 import StatusUpdatePage from "./pages/dashboard/admin/StatusUpdatePage.jsx";
 import Rent_item from "./pages/dashboard/renter/Rent_item.jsx";
+=======
+import ListingDetails from "./pages/dashboard/admin/ListingDetails";
+import Checkout from "./pages/checkout/Checkout.jsx";
+import Payment from "./pages/payment/Payment.jsx";
+>>>>>>> 1a095a10b149ca8667d17c148a4fb4743021dcc7
 
 const PrivateRoute = ({ children }) => {
   const { token } = useSelector((state) => state.auth);
@@ -61,6 +68,8 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/items" element={<Products />} />
           
+          <Route path="/products" element={<Products />} />
+
 
           {/* <Route path="/product/:productId" element={<ProductDescription />} /> */}
 
@@ -91,6 +100,13 @@ const App = () => {
             <Route path="/dashboard/rejected-list" element={<RejectedList />} />
             <Route path="/item/:id" element={<StatusUpdatePage />} />
           </Route>
+
+      
+<Route path="/product/:id" element={<ProductDetails />} />
+<Route path="/checkout/:id" element={<Checkout />} />
+<Route path="/payment/:id" element={<Payment />} />
+
+
         </Routes>
 
         <Footer />
