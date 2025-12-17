@@ -2,13 +2,14 @@
 const ListedItem = require("../model/listedItem");
 const RentedItem = require("../model/rentedItem");
 
-const OrderSummary = require("../models/OrderSummary");
-const Item = require("../models/Item");
-const User = require("../models/User");
+// const OrderSummary = require("../models/OrderSummary");
+// const Item = require("../models/item");
+const User = require("../model/user");
+const orderSummary = require("../model/orderSummary");
 
 exports.createOrderSummary = async (req, res) => {
   try {
-    const userId = req.user.id; // Assuming you use auth middleware
+    const userId = req.user.userId; // Assuming you use auth middleware
     const {
       itemId,
       months,
@@ -60,7 +61,7 @@ exports.createOrderSummary = async (req, res) => {
     }
 
     //  Prevent creating multiple summaries for same item & user
-    const existing = await OrderSummary.findOne({
+    const existing = await orderSummary.findOne({
       rentedItem: itemId,
       rentedBy: userId,
     });
@@ -74,13 +75,23 @@ exports.createOrderSummary = async (req, res) => {
     }
 
     //  Server-side calculations (tampering protected)
-    const firstMonthRent =
-      rentPerMonth + deliveryCharges + platformFee + gst + securityDeposit;
-    const autopayRent = rentPerMonth + platformFee;
-    const totalAmount = firstMonthRent + autopayRent * (months - 1);
+const rent = Number(rentPerMonth);
+const delivery = Number(deliveryCharges);
+const platform = Number(platformFee);
+const gstAmount = Number(gst); // ALREADY CALCULATED
+const deposit = Number(securityDeposit);
+const totalMonths = Number(months);
+
+const firstMonthRent =
+  rent + gstAmount + delivery + platform + deposit;
+
+const autopayRent = rent + platform;
+
+const totalAmount =
+  firstMonthRent + autopayRent * (totalMonths - 1);
 
     //  Create new summary
-    const summary = await OrderSummary.create({
+    const summary = await orderSummary.create({
       rentedItem: itemId,
       rentedBy: userId,
       month: months,
@@ -111,14 +122,15 @@ exports.createOrderSummary = async (req, res) => {
 
 exports.getOrderSummary = async (req, res) => {
   try {
-    const { id } = req.params;
+    const  {id}  = req.body;
+    // console.log(req.body)
     if (!id) {
       return res.status(400).json({
         success: false,
         message: "Order Summary ID is required",
       });
     }
-    const summary = await OrderSummary.findById(id);
+    const summary = await orderSummary.findById(id);
     if (!summary) {
       return res.status(404).json({
         success: false,

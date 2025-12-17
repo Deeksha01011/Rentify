@@ -30,14 +30,11 @@ import ApprovedList from "./pages/dashboard/admin/ApprovedList.jsx";
 import RejectedList from "./pages/dashboard/admin/RejectedList.jsx";
 import ProductDetails from "./pages/product/ProductDetails";
 import Added_Item from "./pages/dashboard/lister/Added_Item.jsx";
-<<<<<<< HEAD
 import StatusUpdatePage from "./pages/dashboard/admin/StatusUpdatePage.jsx";
 import Rent_item from "./pages/dashboard/renter/Rent_item.jsx";
-=======
-import ListingDetails from "./pages/dashboard/admin/ListingDetails";
+// import ListingDetails from "./pages/dashboard/admin/ListingDetails";
 import Checkout from "./pages/checkout/Checkout.jsx";
 import Payment from "./pages/payment/Payment.jsx";
->>>>>>> 1a095a10b149ca8667d17c148a4fb4743021dcc7
 
 const PrivateRoute = ({ children }) => {
   const { token } = useSelector((state) => state.auth);
@@ -67,9 +64,8 @@ const App = () => {
           {/* PUBLIC ROUTES */}
           <Route path="/" element={<Home />} />
           <Route path="/items" element={<Products />} />
-          
-          <Route path="/products" element={<Products />} />
 
+          <Route path="/products" element={<Products />} />
 
           {/* <Route path="/product/:productId" element={<ProductDescription />} /> */}
 
@@ -88,7 +84,7 @@ const App = () => {
             <Route path="/dashboard/my-profile" element={<Profile />} />
             <Route path="/dashboard/setting" element={<Setting />} />
             <Route path="/dashboard/listed-items" element={<Added_Item />} />
-            <Route path="/dashboard/rented-items"  element={<Rent_item/>}/>
+            <Route path="/dashboard/rented-items" element={<Rent_item />} />
             <Route path="/dashboard/listitems" element={<ListItem />} />
             <Route
               path="/dashboard/user/stats"
@@ -101,12 +97,9 @@ const App = () => {
             <Route path="/item/:id" element={<StatusUpdatePage />} />
           </Route>
 
-      
-<Route path="/product/:id" element={<ProductDetails />} />
-<Route path="/checkout/:id" element={<Checkout />} />
-<Route path="/payment/:id" element={<Payment />} />
-
-
+          <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/checkout/ordersummary/:id" element={<Checkout />} />
+          <Route path="/payment/:id" element={<Payment />} />
         </Routes>
 
         <Footer />

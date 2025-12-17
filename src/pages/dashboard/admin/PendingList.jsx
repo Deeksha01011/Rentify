@@ -9,7 +9,7 @@ import {
   updateStatus,
 } from "../../../Services/operations/adminOperations";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 export default function PendingList() {
   // const [rejectReason, setRejectReason] = useState("");
@@ -55,7 +55,7 @@ export default function PendingList() {
   //   setSelectedId(null);
   //
     // 
-  };
+  // };
 
   return (
     <div className="space-y-6">

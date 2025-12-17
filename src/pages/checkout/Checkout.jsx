@@ -2,13 +2,41 @@ import React, { useState, useEffect } from "react";
 import { useParams, useSearchParams, Link } from "react-router-dom";
 import { calculateRentalCost } from "../../utils/rentalCalculator";
 import { motion } from "framer-motion";
+import { GET_ORDER_SUMMARY } from "../../Services/operations/itemOperation";
+import { useSelector } from "react-redux";
 
 const Checkout = () => {
   const { id } = useParams();
-  const [searchParams] = useSearchParams();
+  console.log(id);
+  const { token } = useSelector((state) => state.auth);
 
-  const months = Number(searchParams.get("months")) || 1;
-  const rentPerMonth = Number(searchParams.get("price")) || 0;
+  // const [summaryId, setSummaryId ] = useState(null);
+
+  //    const { id } = useParams();
+  // const { token } = useSelector((state) => state.auth);
+
+  const [order, setOrder] = useState(null);
+
+  useEffect(() => {
+    const getList = async () => {
+      try {
+        const data = await GET_ORDER_SUMMARY(id, token);
+        setOrder(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (token && id) {
+      getList();
+    }
+  }, [token, id]);
+
+  console.log(order);
+  // const [searchParams] = useSearchParams();
+
+  // const months = Number(searchParams.get("months")) || 1;
+  // const rentPerMonth = Number(searchParams.get("price")) || 0;
 
   const [address, setAddress] = useState(
     JSON.parse(localStorage.getItem("userAddress")) || ""
@@ -16,7 +44,7 @@ const Checkout = () => {
 
   const [editable, setEditable] = useState(false);
 
-  const breakdown = calculateRentalCost([rentPerMonth, months]);
+  // const breakdown = calculateRentalCost([rentPerMonth, months]);
 
   useEffect(() => {
     localStorage.setItem("userAddress", JSON.stringify(address));
@@ -25,10 +53,7 @@ const Checkout = () => {
   return (
     <div className="bg-[#f8f9fa] min-h-screen py-10">
       <div className="w-11/12 max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-lg border border-[#dee2e6]">
-        <h1 className="text-2xl font-bold text-[#212529] mb-6">
-          Checkout
-        </h1>
-
+        <h1 className="text-2xl font-bold text-[#212529] mb-6">Checkout</h1>
         {/* ADDRESS SECTION */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -56,11 +81,14 @@ const Checkout = () => {
             className="mt-3 px-4 py-2 bg-[#495057] text-white rounded-md hover:bg-[#343a40] transition"
             onClick={() => setEditable(!editable)}
           >
-            {editable ? "Save Address" : address ? "Edit Address" : "Add Address"}
+            {editable
+              ? "Save Address"
+              : address
+              ? "Edit Address"
+              : "Add Address"}
           </button>
         </motion.div>
-
-        {/* RENTAL BREAKDOWN */}
+        RENTAL BREAKDOWN
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -71,38 +99,37 @@ const Checkout = () => {
           </h2>
 
           <div className="flex justify-between py-1">
-            <span>Rent ({months} month)</span>
-            <span>₹{breakdown.rentTotal}</span>
+            <span>Rent month</span>
+            <span>{order?.rentPerMonth}</span>
           </div>
           <div className="flex justify-between py-1">
             <span>GST (18%)</span>
-            <span>₹{breakdown.gstAmount}</span>
+            <span>₹{order?.gst}</span>
           </div>
           <div className="flex justify-between py-1">
             <span>Delivery Fee</span>
-            <span>₹{breakdown.deliveryFee}</span>
+            <span>₹{order?.deliveryCharges}</span>
           </div>
           <div className="flex justify-between py-1">
-            <span>Platform Fee</span>
-            <span>₹{breakdown.platformFee}</span>
+            <span>AutoPay</span>
+            <span>₹{order?.autopayRent}</span>
           </div>
           <div className="flex justify-between py-1">
             <span>Security Deposit</span>
-            <span>₹{breakdown.securityDeposit}</span>
+            <span>₹{order?.securityDeposit}</span>
           </div>
 
           <div className="border-t border-[#adb5bd] mt-2 pt-2 flex justify-between font-bold text-[#212529]">
             <span>Total Payable</span>
-            <span>₹{breakdown.total}</span>
+            <span>₹{order?.totalAmount}</span>
           </div>
         </motion.div>
-
         {/* PROCEED TO PAYMENT BUTTON */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <Link to={`/payment/${id}?months=${months}&price=${rentPerMonth}`}>
+          <Link to={"/"}>
             <button
               className="w-full py-4 rounded-xl bg-[#212529] text-white text-lg hover:bg-black transition"
               disabled={!address}

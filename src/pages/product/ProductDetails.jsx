@@ -1,25 +1,53 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { GiShoppingBag } from "react-icons/gi";
 import { FaRegClock, FaCreditCard } from "react-icons/fa";
-import allProducts from "../../data/products";
+// import allProducts from "../../data/products";
 import { calculateRentalCost } from "../../utils/rentalCalculator";
 
 import ImageGallery from "./components/ImageGallery";
 import SellerInfo from "./components/SellerInfo";
 import SpecsTable from "./components/SpecsTable";
+import { getListItemDetails } from "../../Services/operations/UserOperations";
+import { useSelector } from "react-redux";
+import { CREATE_ORDER_SUMMARY } from "../../Services/operations/itemOperation";
 
 const ProductDetails = () => {
+  const { token } = useSelector((state) => state.auth);
   const { id } = useParams();
-  const product = allProducts.find((p) => p.id === Number(id));
+  const [summaryId, setSummaryId ] = useState(null);
+
+  const [product, setProduct] = useState(null);
+  useEffect(() => {
+    const getList = async () => {
+      try {
+        const data = await getListItemDetails(id, token);
+        setProduct(data); // ✅ API ka response
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (token) {
+      getList();
+    }
+  }, [token]);
+  console.log(product);
+
+  // const product = allProducts.find((p) => p.id === Number(id));
   const [selectedMonth, setSelectedMonth] = useState(1);
 
   if (!product) {
-    return <div className="text-center mt-24 text-[#6c757d]">Product not found</div>;
+    return (
+      <div className="text-center mt-24 text-[#6c757d]">Product not found</div>
+    );
   }
 
-  const breakdown = calculateRentalCost([product.price, selectedMonth]);
+  // const breakdown = calculateRentalCost([
+  //   product.listersEarning,
+  //   selectedMonth,
+  // ]);
 
   // ===== Steps cards data =====
   const steps = [
@@ -43,17 +71,41 @@ const ProductDetails = () => {
   // ===== Duration selection cards =====
   const durations = [1, 3, 6, 12];
 
+  const clickHandler = async (
+    gstAmount,
+    PlatformFee,
+    securityDeposit,
+    deliveryFee
+  ) => {
+    const data = new FormData();
+    data.append("itemId", product.item._id);
+    data.append("months", product.listingPeriod);
+    data.append("rentPerMonth", product.listersEarning);
+    data.append("deliveryCharges", deliveryFee);
+    data.append("platformFee", PlatformFee);
+    data.append("gst", gstAmount);
+    data.append("securityDeposit", securityDeposit);
+
+    const res = await CREATE_ORDER_SUMMARY(data, token);
+    console.log("kya hai ji", res);
+    console.log(res._id);
+    setSummaryId(res._id);
+    // console.log(data)
+  };
+  const breakdown = calculateRentalCost([
+    product.listersEarning,
+    product?.listingPeriod,
+  ]);
   return (
     <div className="bg-[#f8f9fa] min-h-screen py-10">
       <div className="w-11/12 mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
-
         {/* LEFT SIDE */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-[#adb5bd] border border-[#dee2e6] rounded-xl shadow-sm p-5 flex flex-col gap-5"
         >
-          <ImageGallery images={[product.image]} />
+          <ImageGallery images={product?.item?.itemImages[2]} />
 
           <div className="flex justify-between text-sm text-[#495057] bg-[#e9ecef] p-5 rounded-lg">
             <span>⭐ 4.5 Rating</span>
@@ -61,7 +113,30 @@ const ProductDetails = () => {
             <span>🔒 100% Secure</span>
           </div>
 
-          <Link to={`/checkout/${product.id}?months=${selectedMonth}&price=${product.price}`}>
+          <button
+            onClick={() =>
+              clickHandler(
+                breakdown.gstAmount,
+                breakdown.platformFee,
+                breakdown.securityDeposit,
+                breakdown.deliveryFee
+              )
+            }
+            on
+          >
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              className="w-full bg-[#212529] text-white py-3 rounded-lg text-lg font-semibold hover:bg-[#343a40] transition cursor-pointer"
+            >
+              Generate Order
+            </motion.button>
+          </button>
+          <Link
+            to={`/checkout/ordersummary/${summaryId}`}
+           
+            on
+          >
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
@@ -81,7 +156,9 @@ const ProductDetails = () => {
                 className="bg-white border border-[#dee2e6] rounded-xl p-4 flex flex-col items-center text-center shadow-sm cursor-pointer transition"
               >
                 <div className="mb-3">{step.icon}</div>
-                <h4 className="font-semibold text-[#212529] mb-1">{step.title}</h4>
+                <h4 className="font-semibold text-[#212529] mb-1">
+                  {step.title}
+                </h4>
                 <p className="text-sm text-[#495057]">{step.desc}</p>
               </motion.div>
             ))}
@@ -95,38 +172,47 @@ const ProductDetails = () => {
           className="bg-[#adb5bd] border border-[#dee2e6] rounded-xl shadow-sm p-6 flex flex-col gap-6"
         >
           <div>
-            <h1 className="text-3xl font-bold text-[#212529]">{product.title}</h1>
-            <p className="text-[#495057] italic mt-2">{product.description}</p>
+            <h1 className="text-3xl font-bold text-[#212529]">
+              {product.item.itemName}
+            </h1>
+            <p className="text-[#495057] italic mt-2">
+              {product.item.description}
+            </p>
           </div>
 
           <SellerInfo />
 
           {/* Duration cards replacing RentPlans */}
-         {/* Duration + Rent cards */}
-<div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
-  {durations.map((month) => {
-    const breakdown = calculateRentalCost([product.price, month]);
-    const isSelected = selectedMonth === month;
+          {/* Duration + Rent cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
+            {durations.map((month) => {
+              const breakdown = calculateRentalCost([
+                product.listersEarning,
+                month,
+              ]);
+              const isSelected = selectedMonth === month;
 
-    return (
-      <motion.div
-        key={month}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.97 }}
-        onClick={() => setSelectedMonth(month)}
-        className={`cursor-pointer rounded-xl p-4 text-center border-2 transition-colors duration-300
-          ${isSelected
-            ? "bg-[#495057] border-[#495057] text-white"
-            : "bg-[#f8f9fa] border-[#dee2e6] text-[#212529] hover:bg-[#e9ecef] hover:border-[#adb5bd]"}`
-        }
-      >
-        <p className="font-semibold text-lg">{month} {month === 1 ? "Month" : "Months"}</p>
-        <p className="text-sm mt-1">₹{breakdown.rentTotal}</p>
-      </motion.div>
-    );
-  })}
-</div>
-
+              return (
+                <motion.div
+                  key={month}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.97 }}
+                  onClick={() => setSelectedMonth(month)}
+                  className={`cursor-pointer rounded-xl p-4 text-center border-2 transition-colors duration-300
+          ${
+            isSelected
+              ? "bg-[#495057] border-[#495057] text-white"
+              : "bg-[#f8f9fa] border-[#dee2e6] text-[#212529] hover:bg-[#e9ecef] hover:border-[#adb5bd]"
+          }`}
+                >
+                  <p className="font-semibold text-lg">
+                    {month} {month === 1 ? "Month" : "Months"}
+                  </p>
+                  <p className="text-sm mt-1">₹{breakdown.rentTotal}</p>
+                </motion.div>
+              );
+            })}
+          </div>
 
           <div className="mt-4 bg-[#e9ecef] border border-[#dee2e6] rounded-lg p-4 text-[#495057]">
             <h3 className="text-lg font-semibold mb-2">Price Summary</h3>

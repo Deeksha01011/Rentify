@@ -24,6 +24,10 @@ const {
   getAllRatingReviews,
   createRatingAndReview,
 } = require("../controller/ratingAndReviews");
+const {
+  createOrderSummary,
+  getOrderSummary,
+} = require("../controller/rentedItem");
 
 // not tested yet
 // item category api
@@ -42,7 +46,7 @@ router.get(
   getLatestApprovedListings
 );
 router.get("/getlistitemdetail", authenticate, getlistItemDetails);
-router.get("/getalllisteditems", authenticate, getAllListedItems)
+router.get("/getalllisteditems", authenticate, getAllListedItems);
 
 // listed items api
 router.get("/listeditems", authenticate, getAllListedItems);
@@ -57,5 +61,9 @@ router.post("/filteritems", filterSearch);
 // rating and reviews api
 router.post("/createratingreview", authenticate, createRatingAndReview);
 router.get("/getallratingreviews", authenticate, getAllRatingReviews);
+
+// rented item
+router.post("/createorder", authenticate, createOrderSummary);
+router.post("/getorder", authenticate, getOrderSummary);
 
 module.exports = router;

@@ -21,10 +21,9 @@ export const profileEndpoint = {
 export const itemsEndpoint = {
   CREATE_ITEM: REACT_APP_API_URL + "/items/createitem",
   LIST_ITEMS: REACT_APP_API_URL + "/items/listitem",
-  APPROVED_LIST : REACT_APP_API_URL + "/items/latest",
+  APPROVED_LIST: REACT_APP_API_URL + "/items/latest",
   GET_ALL_LISTED_ITEMS: REACT_APP_API_URL + "/items/getalllisteditems",
-  GET_LISTED_ITEM_DETAILS: REACT_APP_API_URL + "/items/getlistitemdetail"
-
+  GET_LISTED_ITEM_DETAILS: REACT_APP_API_URL + "/items/getlistitemdetail",
 };
 
 export const adminEndpoint = {
@@ -38,5 +37,10 @@ export const adminEndpoint = {
 export const userEndpoints = {
   GET_LISTED_ITEMS: REACT_APP_API_URL + "/items/listeditems",
   GET_USER_ANALYTICS: REACT_APP_API_URL + "/items/userdashboard",
-    GET_LIST_ITEM_DETAIL: REACT_APP_API_URL + "/items/getlistitemdetail"
+  GET_LIST_ITEM_DETAIL: REACT_APP_API_URL + "/items/getlistitemdetail",
+};
+
+export const renterEndpoints = {
+  CREATE_ORDER_SUMMARY: REACT_APP_API_URL + "/items/createorder",
+  GET_ORDER_SUMMARY: REACT_APP_API_URL + "/items/getorder",
 };

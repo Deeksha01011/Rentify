@@ -15,7 +15,7 @@ import {
 import { createItem, listItem } from "../../Services/operations/itemOperation";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+// import { motion } from "framer-motion";
 
 const ListItem = () => {
   const [imageError, setImageError] = useState("");

@@ -6,7 +6,7 @@ const ItemCard = ({ itemData }) => {
   console.log(itemData);
   return (
     <Link
-      to={"/dashboard/my-profile"}
+      to={`/product/${itemData._id}`}
       className="w-[90%] relative h-88  border border-gray-300 rounded-xl shadow-sm hover:shadow-xl hover:scale-105 transition-transform transition-all duration-300 cursor-pointer overflow-hidden flex flex-col"
     >
       {/* Image Section */}
@@ -47,7 +47,7 @@ const ItemCard = ({ itemData }) => {
 
           <div>
             <Link
-              to={"/"}
+               to={`/product/${itemData._id}`}
               className="text-m text-black hover:text-white bg-gray-100 border hover:border-transparent hover:bg-gray-900 px-3 py-1 rounded-lg transition-all cursor-pointer"
             >
               Rent now

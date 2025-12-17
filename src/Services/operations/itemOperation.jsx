@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 import { apiconnector } from "../apiConnector";
-import { categoriesEndpoint, itemsEndpoint } from "../apis";
+import { categoriesEndpoint, itemsEndpoint, renterEndpoints } from "../apis";
 
 export const getAllCategories = async () => {
   try {
@@ -88,31 +88,74 @@ export const getAllItems = async (token) => {
       }
     );
     if (response.data.success) {
-      console.log("ALL ITEMS LISTED HERE",response.data);
+      console.log("ALL ITEMS LISTED HERE", response.data);
 
       return response;
     }
   } catch (error) {
     console.log(error.message);
-  } 
-}
+  }
+};
 
 export const getListedItemDetail = async (token) => {
   try {
     const response = await apiconnector(
       "GET",
       itemsEndpoint.GET_LISTED_ITEM_DETAILS,
-      
+
       {
         Authorization: `Bearer ${token}`,
       }
     );
     if (response.data.success) {
-      console.log("ALL ITEMS LISTED HERE",response.data);
+      console.log("ALL ITEMS LISTED HERE", response.data);
 
       return response;
     }
   } catch (error) {
     console.log(error.message);
-  } 
-}
+  }
+};
+export const CREATE_ORDER_SUMMARY = async (data, token) => {
+  try {
+    const response = await apiconnector(
+      "POST",
+      renterEndpoints.CREATE_ORDER_SUMMARY,
+      data,
+
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+    console.log("CREATE_ORDER_SUMMARY", response.data);
+
+    if (response.data.success) {
+      toast.success("Order Summary Created Successfully");
+      return response.data.summary;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const GET_ORDER_SUMMARY = async (id, token) => {
+
+  try {
+    const response = await apiconnector(
+      "POST",
+      renterEndpoints.GET_ORDER_SUMMARY,
+      {id},
+
+      {
+        Authorization: `Bearer ${token}`,
+      }
+    );
+
+    if (response.data.success) {
+      toast.success("Order Summary fetched Successfully");
+      console.log("GET_ORDER_SUMMARY", response.data.data);
+      return response.data.data;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
